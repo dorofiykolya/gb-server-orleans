@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+	This is a sample client configuration file. 
+	For a detailed reference, see "Orleans Configuration Reference.html".
+-->
+<ClientConfiguration xmlns="urn:orleans">
+  <GatewayProvider ProviderType="Config"/>
+  <Gateway Address="localhost" Port="40000"/>
+  <Tracing DefaultTraceLevel="Error"/>
+  <!--<Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteMessagingTraces="false" BulkMessageLimit="1000">
+    <TraceLevelOverride LogPrefix="Runtime" TraceLevel="Warning" />
+    <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
+    <TraceLevelOverride LogPrefix="AssemblyLoader" TraceLevel="Warning" />
+  </Tracing>-->
+  <Statistics MetricsTableWriteInterval="30s" PerfCounterWriteInterval="30s" LogWriteInterval="300s" WriteLogStatisticsToTable="true"/>
+  <StreamProviders>
+    <Provider Type="Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider" Name="SMSProvider" FireAndForgetDelivery="false"/>
+    <!--<Provider Type="Orleans.Providers.Streams.AzureQueue.AzureQueueStreamProvider" Name="AzureQueueProvider" DataConnectionString="UseDevelopmentStorage=true"/>-->
+  </StreamProviders>
+</ClientConfiguration>
