@@ -19,13 +19,16 @@ namespace SocketProxy
     {
         static async Task Run()
         {
-            var status = RunGrainClient();
-            if (status.Exception != null)
+            if (false)
             {
-                Console.WriteLine("GrainClient not started, exception:" + status.Exception);
-                Console.ReadKey();
+                var status = RunGrainClient();
+                if (status.Exception != null)
+                {
+                    Console.WriteLine("GrainClient not started, exception:" + status.Exception);
+                    Console.ReadKey();
 
-                return;
+                    return;
+                }
             }
             await RunServerAsync();
         }
@@ -81,8 +84,8 @@ namespace SocketProxy
                         pipeline.AddLast(new LoggerHandler(logger, InternalLogLevel.TRACE));
                         //policy
                         pipeline.AddLast(new ClientPolicyHandler(logger), new ClientPolicyWriter(logger));
-                        //decode / encode
-                        pipeline.AddLast(new StringEncoder(), new StringDecoder());
+                        //test decode / encode
+                        //pipeline.AddLast(new StringEncoder(), new StringDecoder());
                         //packet encoder
                         pipeline.AddLast(new PacketDecoder(logger), new PacketEncoder(logger));
                         //auth

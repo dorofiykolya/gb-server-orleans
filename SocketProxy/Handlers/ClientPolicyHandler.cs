@@ -22,7 +22,10 @@ namespace SocketProxy
 
         protected override void ChannelRead0(IChannelHandlerContext ctx, PolicyChecked msg)
         {
-            ctx.WriteAndFlushAsync(PolicyBuffer);
+            if (msg.Success && msg.Type == PolicyType.Flash)
+            {
+                ctx.WriteAndFlushAsync(PolicyBuffer);
+            }
         }
 
         public override void ExceptionCaught(IChannelHandlerContext contex, Exception e)

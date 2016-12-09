@@ -30,7 +30,7 @@ namespace SocketProxy
                 {
                     foreach (var key in dictionary.Keys)
                     {
-                        if ((string)key == "auth")
+                        if ((string)key == "authByDevelopers")
                         {
                             _logger.Warn("AUTH");
                         }
