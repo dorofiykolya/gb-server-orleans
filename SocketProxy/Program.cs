@@ -1,121 +1,115 @@
-﻿using Microsoft.CSharp;
-using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Text;
+﻿using System;
+using System.Threading;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using System.Threading.Tasks;
-using DotNetty.Buffers;
+using DotNetty.Common.Internal.Logging;
+using Orleans;
+using Orleans.Runtime.Configuration;
+using SocketProxy.Decoders;
+using SocketProxy.Handlers;
+using PacketDecoder = SocketProxy.Handlers.PacketDecoder;
 
 namespace SocketProxy
 {
     class Program
     {
-        private static readonly string policy = "<?xml version='1.0'?><!DOCTYPE cross-domain-policy SYSTEM '/xml/dtds/cross-domain-policy.dtd'><cross-domain-policy> <allow-access-from domain='*' to-ports='*' /></cross-domain-policy>" + '\0';
+        static async Task Run()
+        {
+            var status = RunGrainClient();
+            if (status.Exception != null)
+            {
+                Console.WriteLine("GrainClient not started, exception:" + status.Exception);
+                Console.ReadKey();
 
-        static void Main(string[] args) => RunServerAsync().Wait();
+                return;
+            }
+            await RunServerAsync();
+        }
+
+        static OrleansClientResult RunGrainClient()
+        {
+            Thread.Sleep(1000);
+            var result = new OrleansClientResult();
+            var count = 3;
+            while (count-- > 0)
+            {
+                try
+                {
+                    GrainClient.Initialize("ProxyConfig.xml");
+                    result.Initialized = GrainClient.IsInitialized;
+                }
+                catch (Exception exception)
+                {
+                    if (count <= 0)
+                    {
+                        result.Exception = exception;
+                        break;
+                    }
+                    Thread.Sleep(1500);
+                    Console.WriteLine("Try To Reconnect GrainClient");
+                }
+            }
+
+            Console.WriteLine("GrainClient-IsInitialized:" + GrainClient.IsInitialized);
+            return result;
+        }
 
         static async Task RunServerAsync()
         {
-            var mainGroup = new MultithreadEventLoopGroup(1);
+            var clientManager = new ClientManager();
+            var authManager = new AuthManager();
+            var logger = new ConsoleServerLogger();
+
+            var bossGroup = new MultithreadEventLoopGroup(1);
             var workerGroup = new MultithreadEventLoopGroup();
-            var server = new ServerBootstrap();
-            server
-                .Group(mainGroup, workerGroup)
-                .Channel<TcpServerSocketChannel>()
-                .Option(ChannelOption.SoBacklog, 100)
-                .Handler(new LoggingHandler("SERVER_LOGS"))
-                .ChildHandler(new Handler(false));
 
-            //.ChildHandler(new ActionChannelInitializer<ISocketChannel>(channel =>
-            //{
-            //    channel.Pipeline.AddLast(new Handler());
-            //}));
-            var boundChannel = await server.BindAsync(8899);
+            try
+            {
+                var bootstrap = new ServerBootstrap();
+                bootstrap
+                    .Group(bossGroup, workerGroup)
+                    .Channel<TcpServerSocketChannel>()
+                    .Option(ChannelOption.SoBacklog, 100)
+                    .Handler(new LoggingHandler(LogLevel.TRACE))
+                    .ChildHandler(new ActionChannelInitializer<ISocketChannel>(channel =>
+                    {
+                        IChannelPipeline pipeline = channel.Pipeline;
+                        pipeline.AddLast(new LoggerHandler(logger, InternalLogLevel.TRACE));
+                        //policy
+                        pipeline.AddLast(new ClientPolicyHandler(logger), new ClientPolicyWriter(logger));
+                        //decode / encode
+                        pipeline.AddLast(new StringEncoder(), new StringDecoder());
+                        //packet encoder
+                        pipeline.AddLast(new PacketDecoder(logger), new PacketEncoder(logger));
+                        //auth
+                        pipeline.AddLast(new AuthHandler(authManager, logger));
+                        //handler
+                        pipeline.AddLast(new ClientChannelHandler(clientManager, authManager, logger));
+                    }));
 
-            Console.WriteLine("ENTER TO TERMINATE");
-            Console.ReadKey();
-            await boundChannel.CloseAsync();
-            await
-                Task.WhenAll(
-                    mainGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(1)),
-                    workerGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(1))
-                    );
+                IChannel bootstrapChannel = await bootstrap.BindAsync(8899);
+
+                Console.WriteLine("Press Enter To Exit");
+                Console.ReadLine();
+
+                await bootstrapChannel.CloseAsync();
+            }
+            finally
+            {
+                Task.WaitAll(bossGroup.ShutdownGracefullyAsync(), workerGroup.ShutdownGracefullyAsync());
+            }
         }
 
-        class Handler : ChannelHandlerAdapter
+        static void Main() => Run().Wait();
+
+        class OrleansClientResult
         {
-            private readonly bool _isDecoder;
-
-            public Handler(bool isDecoder)
-            {
-                _isDecoder = isDecoder;
-            }
-
-            public override void ChannelRegistered(IChannelHandlerContext context)
-            {
-                context.Channel.Pipeline.AddLast(new Handler(true));
-            }
-
-            public override Task WriteAsync(IChannelHandlerContext context, object message)
-            {
-                if (!_isDecoder)
-                {
-                    IByteBuffer buffer = message as IByteBuffer;
-
-                    if (buffer != null)
-                    {
-                        var str = buffer.ToString(Encoding.UTF8);
-                        Console.WriteLine(str);
-                    }
-                }
-                return base.WriteAsync(context, message);
-            }
-
-            public override void ChannelActive(IChannelHandlerContext context)
-            {
-                Console.WriteLine("NEW CLIENT");
-                base.ChannelActive(context);
-            }
-
-            public override void ChannelRead(IChannelHandlerContext context, object message)
-            {
-                Console.WriteLine(message);
-                IByteBuffer buffer = message as IByteBuffer;
-
-                if (buffer != null)
-                {
-                    var str = buffer.ToString(Encoding.UTF8);
-                    Console.WriteLine(str);
-                    if (str.StartsWith("<policy-file-request/>"))
-                    {
-                        var bytes = Encoding.UTF8.GetBytes(policy);
-                        context.WriteAsync(bytes);
-                    }
-                }
-            }
-
-            public override void ChannelReadComplete(IChannelHandlerContext context) => context.Flush();
-
-            public override Task DisconnectAsync(IChannelHandlerContext context)
-            {
-                Console.WriteLine("DisconnectAsync");
-                return base.DisconnectAsync(context);
-            }
-
-            public override Task CloseAsync(IChannelHandlerContext context)
-            {
-                Console.WriteLine("CloseAsync");
-                return base.CloseAsync(context);
-            }
+            public bool Initialized { get; set; }
+            public Exception Exception { get; set; }
         }
     }
 

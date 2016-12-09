@@ -1,0 +1,4 @@
+[submodule "submodules/DotNetty"]
+	path = submodules/DotNetty
+	url = git@github.com:Azure/DotNetty.git
+	branch = dev

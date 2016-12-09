@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocketProxy
+namespace NetServer
 {
-    public class SocketClient
+    public class Server
     {
     }
 }
