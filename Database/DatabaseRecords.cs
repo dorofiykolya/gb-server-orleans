@@ -17,33 +17,21 @@ namespace Database
             _initializationRecord = new InitializationRecord();
 
             var buildingsTableAdapter = new DatabaseDataSetTableAdapters.BuildingsTableAdapter();
-            buildingsTableAdapter.Fill(new DatabaseDataSet.BuildingsDataTable());
-
             var buildings = buildingsTableAdapter.GetData();
 
             var buildingLevelAdapter = new DatabaseDataSetTableAdapters.BuildingLevelsTableAdapter();
-            buildingLevelAdapter.Fill(new DatabaseDataSet.BuildingLevelsDataTable());
-
             var buildingsLevel = buildingLevelAdapter.GetData();
 
             var unitsTableAdapter = new DatabaseDataSetTableAdapters.UnitsTableAdapter();
-            unitsTableAdapter.Fill(new DatabaseDataSet.UnitsDataTable());
-
             var units = unitsTableAdapter.GetData();
 
             var unitsLevelTableAdapter = new DatabaseDataSetTableAdapters.UnitLevelsTableAdapter();
-            unitsLevelTableAdapter.Fill(new DatabaseDataSet.UnitLevelsDataTable());
-
             var unitsLevels = unitsLevelTableAdapter.GetData();
 
             var locationsTableAdapter = new DatabaseDataSetTableAdapters.LocationsTableAdapter();
-            locationsTableAdapter.Fill(new DatabaseDataSet.LocationsDataTable());
-
             var locations = locationsTableAdapter.GetData();
 
             var locationBuildingsTableAdapter = new DatabaseDataSetTableAdapters.LocationBuildingsTableAdapter();
-            locationBuildingsTableAdapter.Fill(new DatabaseDataSet.LocationBuildingsDataTable());
-
             var locationsBuildings = locationBuildingsTableAdapter.GetData();
 
             _initializationRecord.buildings = new BuildingRecord[buildings.Count];

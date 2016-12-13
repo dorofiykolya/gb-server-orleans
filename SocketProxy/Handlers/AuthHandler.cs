@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
 using Newtonsoft.Json.Linq;
@@ -29,9 +27,9 @@ namespace SocketProxy
             {
                 ctx.FireChannelRead(msg);
             }
-            else if(!_checkAuth)
+            else if (!_checkAuth)
             {
-                var jObject = msg.Data as JObject;
+                var jObject = msg.GetData<JObject>();
                 if (jObject != null)
                 {
                     var isValid = false;
@@ -41,7 +39,7 @@ namespace SocketProxy
                         {
                             case "authByDevelopers":
                                 _checkAuth = true;
-                                isValid = await _authManager.CheckAuthByDevelopers(key.Value);
+                                isValid = await _authManager.CheckAuthByDevelopers(key.Value["userKey"].Value<string>());
                                 break;
                             case "authByAndroid":
                                 _checkAuth = true;
@@ -61,7 +59,7 @@ namespace SocketProxy
                     }
                     if (isValid)
                     {
-                        
+
                     }
                 }
             }
