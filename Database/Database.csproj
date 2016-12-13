@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseUsers.cs" />
     <Compile Include="Records\BuildingLevelRecord.cs" />
     <Compile Include="Records\BuildingRecord.cs" />
     <Compile Include="DatabaseDataSet.cs">
