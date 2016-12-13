@@ -5,11 +5,10 @@ using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Newtonsoft.Json;
-using SocketProxy.Decoders;
 
-namespace SocketProxy.Handlers
+namespace SocketProxy.Decoders
 {
-    public class PacketDecoder : MessageToMessageEncoder<IByteBuffer>
+    public class PacketDecoder : MessageToMessageDecoder<IByteBuffer>
     {
         private readonly ConsoleServerLogger _logger;
         private bool _readLength = true;
@@ -20,14 +19,15 @@ namespace SocketProxy.Handlers
             _logger = logger;
         }
 
-        protected override void Encode(IChannelHandlerContext context, IByteBuffer message, List<object> output)
+        protected override void Decode(IChannelHandlerContext context, IByteBuffer message, List<object> output)
         {
             var buffer = message;
             while (buffer != null && buffer.ReadableBytes >= 4)
             {
                 if (_readLength)
                 {
-                    _packetLength = buffer.ReadInt();
+                    var endianBuffer = buffer.WithOrder(ByteOrder.LittleEndian);
+                    _packetLength = endianBuffer.ReadInt();
                     _readLength = false;
                 }
                 if (buffer.ReadableBytes >= _packetLength)

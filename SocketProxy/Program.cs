@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
@@ -8,10 +7,7 @@ using DotNetty.Transport.Channels.Sockets;
 using System.Threading.Tasks;
 using DotNetty.Common.Internal.Logging;
 using Orleans;
-using Orleans.Runtime.Configuration;
 using SocketProxy.Decoders;
-using SocketProxy.Handlers;
-using PacketDecoder = SocketProxy.Handlers.PacketDecoder;
 
 namespace SocketProxy
 {
@@ -26,7 +22,6 @@ namespace SocketProxy
                 {
                     Console.WriteLine("GrainClient not started, exception:" + status.Exception);
                     Console.ReadKey();
-
                     return;
                 }
             }

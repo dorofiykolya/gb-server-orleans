@@ -1,6 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
+using Newtonsoft.Json.Linq;
 using SocketProxy.Decoders;
 
 namespace SocketProxy
@@ -9,33 +12,62 @@ namespace SocketProxy
     {
         private readonly AuthManager _authManager;
         private readonly IInternalLogger _logger;
-        private bool _authorized = true;
+        private bool _authorized = false;
+        private bool _checkAuth = false;
+        private readonly ConcurrentQueue<Packet> _queue;
 
         public AuthHandler(AuthManager authManager, IInternalLogger logger)
         {
+            _queue = new ConcurrentQueue<Packet>();
             _authManager = authManager;
             _logger = logger;
         }
 
-        protected override void ChannelRead0(IChannelHandlerContext ctx, Packet msg)
+        protected override async void ChannelRead0(IChannelHandlerContext ctx, Packet msg)
         {
             if (_authorized)
             {
                 ctx.FireChannelRead(msg);
             }
-            else
+            else if(!_checkAuth)
             {
-                var dictionary = msg.Data as IDictionary;
-                if (dictionary != null)
+                var jObject = msg.Data as JObject;
+                if (jObject != null)
                 {
-                    foreach (var key in dictionary.Keys)
+                    var isValid = false;
+                    foreach (var key in jObject)
                     {
-                        if ((string)key == "authByDevelopers")
+                        switch (key.Key)
                         {
-                            _logger.Warn("AUTH");
+                            case "authByDevelopers":
+                                _checkAuth = true;
+                                isValid = await _authManager.CheckAuthByDevelopers(key.Value);
+                                break;
+                            case "authByAndroid":
+                                _checkAuth = true;
+                                break;
+                            case "authByBrowser":
+                                _checkAuth = true;
+                                isValid = await _authManager.CheckAuthByBrowser(key.Value);
+                                break;
+                            case "authByIOS":
+                                _checkAuth = true;
+                                break;
+                            default:
+                                _logger.Error("InvalidAuth");
+                                await ctx.CloseAsync();
+                                break;
                         }
                     }
+                    if (isValid)
+                    {
+                        
+                    }
                 }
+            }
+            else
+            {
+                _queue.Enqueue(msg);
             }
         }
     }

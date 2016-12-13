@@ -83,6 +83,7 @@ namespace SocketProxy
                     else
                     {
                         Fail(context);
+                        return;
                     }
                 }
                 _checked = true;
@@ -102,7 +103,7 @@ namespace SocketProxy
         {
             _logger.Info("POLICY NOT FULL" + context.Channel.RemoteAddress);
 
-            throw new DecoderException("wait full request" + context.Channel.RemoteAddress);
+            //throw new DecoderException("wait full request" + context.Channel.RemoteAddress);
         }
     }
 }

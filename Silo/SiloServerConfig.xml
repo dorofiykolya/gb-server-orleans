@@ -4,6 +4,7 @@
     <StorageProviders>
       <Provider Type="Orleans.Storage.MemoryStorage" Name="Default" />
       <Provider Type="StorageProvider.JSONFileStorageProvider" Name="FileStore" Path="..\FileStorage" />
+      <Provider Type="Orleans.StorageProviders.RedisStorage" Name="RedisStore" UseJsonFormat="true" RedisConnectionString="localhost" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>
