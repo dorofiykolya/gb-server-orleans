@@ -13,10 +13,15 @@ namespace Database
 
         public UsersTableAdapter Adapter { get; }
 
-        public static int GetUserIdByDeveloperId(string developerId)
+        public static DatabaseDataSet.UsersRow GetByDeveloperId(string developerId)
         {
-            var data = Instance.Adapter.GetDataByDeveloperId(developerId);
-            return data.Count != 0 ? data[0].UserId : -1;
+            var table = Instance.Adapter.GetDataBy(developerId);
+            return table[0];
+        }
+
+        public static DatabaseDataSet.UsersRow GetUserAuth(int userAuth)
+        {
+            return null;
         }
     }
 }

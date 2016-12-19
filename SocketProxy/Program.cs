@@ -68,6 +68,7 @@ namespace SocketProxy
             try
             {
                 var bootstrap = new ServerBootstrap();
+                var packetsConverter = new ClientPacketConverter();
                 bootstrap
                     .Group(bossGroup, workerGroup)
                     .Channel<TcpServerSocketChannel>()
@@ -82,11 +83,11 @@ namespace SocketProxy
                         //test decode / encode
                         //pipeline.AddLast(new StringEncoder(), new StringDecoder());
                         //packet encoder
-                        pipeline.AddLast(new PacketDecoder(logger), new PacketEncoder(logger));
+                        pipeline.AddLast(new PacketDecoder(packetsConverter, logger), new PacketEncoder(logger));
                         //auth
                         pipeline.AddLast(new AuthHandler(authManager, logger));
                         //handler
-                        pipeline.AddLast(new ClientChannelHandler(clientManager, authManager, logger));
+                        pipeline.AddLast(new UserChannelHandler(clientManager, authManager, logger));
                     }));
 
                 IChannel bootstrapChannel = await bootstrap.BindAsync(8899);

@@ -4760,13 +4760,9 @@ namespace Database {
             
             private global::System.Data.DataColumn columnAuthKey;
             
-            private global::System.Data.DataColumn columnAuthCreateTime;
+            private global::System.Data.DataColumn columnAuthTime;
             
             private global::System.Data.DataColumn columnDeveloperId;
-            
-            private global::System.Data.DataColumn columnAndroidId;
-            
-            private global::System.Data.DataColumn columnIOSId;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -4819,9 +4815,9 @@ namespace Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn AuthCreateTimeColumn {
+            public global::System.Data.DataColumn AuthTimeColumn {
                 get {
-                    return this.columnAuthCreateTime;
+                    return this.columnAuthTime;
                 }
             }
             
@@ -4830,22 +4826,6 @@ namespace Database {
             public global::System.Data.DataColumn DeveloperIdColumn {
                 get {
                     return this.columnDeveloperId;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn AndroidIdColumn {
-                get {
-                    return this.columnAndroidId;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IOSIdColumn {
-                get {
-                    return this.columnIOSId;
                 }
             }
             
@@ -4886,15 +4866,13 @@ namespace Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public UsersRow AddUsersRow(string AuthKey, System.DateTime AuthCreateTime, string DeveloperId, string AndroidId, string IOSId) {
+            public UsersRow AddUsersRow(string AuthKey, System.DateTime AuthTime, string DeveloperId) {
                 UsersRow rowUsersRow = ((UsersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         AuthKey,
-                        AuthCreateTime,
-                        DeveloperId,
-                        AndroidId,
-                        IOSId};
+                        AuthTime,
+                        DeveloperId};
                 rowUsersRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowUsersRow);
                 return rowUsersRow;
@@ -4919,10 +4897,8 @@ namespace Database {
             internal void InitVars() {
                 this.columnUserId = base.Columns["UserId"];
                 this.columnAuthKey = base.Columns["AuthKey"];
-                this.columnAuthCreateTime = base.Columns["AuthCreateTime"];
+                this.columnAuthTime = base.Columns["AuthTime"];
                 this.columnDeveloperId = base.Columns["DeveloperId"];
-                this.columnAndroidId = base.Columns["AndroidId"];
-                this.columnIOSId = base.Columns["IOSId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4932,25 +4908,17 @@ namespace Database {
                 base.Columns.Add(this.columnUserId);
                 this.columnAuthKey = new global::System.Data.DataColumn("AuthKey", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAuthKey);
-                this.columnAuthCreateTime = new global::System.Data.DataColumn("AuthCreateTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAuthCreateTime);
+                this.columnAuthTime = new global::System.Data.DataColumn("AuthTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAuthTime);
                 this.columnDeveloperId = new global::System.Data.DataColumn("DeveloperId", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDeveloperId);
-                this.columnAndroidId = new global::System.Data.DataColumn("AndroidId", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAndroidId);
-                this.columnIOSId = new global::System.Data.DataColumn("IOSId", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIOSId);
                 this.columnUserId.AutoIncrement = true;
                 this.columnUserId.AutoIncrementSeed = -1;
                 this.columnUserId.AutoIncrementStep = -1;
                 this.columnUserId.AllowDBNull = false;
                 this.columnUserId.ReadOnly = true;
-                this.columnAuthKey.AllowDBNull = false;
-                this.columnAuthKey.MaxLength = 2147483647;
-                this.columnAuthCreateTime.AllowDBNull = false;
-                this.columnDeveloperId.MaxLength = 2147483647;
-                this.columnAndroidId.MaxLength = 2147483647;
-                this.columnIOSId.MaxLength = 2147483647;
+                this.columnAuthKey.MaxLength = 10;
+                this.columnDeveloperId.MaxLength = 10;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7321,7 +7289,12 @@ namespace Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string AuthKey {
                 get {
-                    return ((string)(this[this.tableUsers.AuthKeyColumn]));
+                    if (this.IsAuthKeyNull()) {
+                        return null;
+                    }
+                    else {
+                        return ((string)(this[this.tableUsers.AuthKeyColumn]));
+                    }
                 }
                 set {
                     this[this.tableUsers.AuthKeyColumn] = value;
@@ -7330,12 +7303,17 @@ namespace Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime AuthCreateTime {
+            public System.DateTime AuthTime {
                 get {
-                    return ((global::System.DateTime)(this[this.tableUsers.AuthCreateTimeColumn]));
+                    try {
+                        return ((global::System.DateTime)(this[this.tableUsers.AuthTimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AuthTime\' in table \'Users\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableUsers.AuthCreateTimeColumn] = value;
+                    this[this.tableUsers.AuthTimeColumn] = value;
                 }
             }
             
@@ -7357,34 +7335,26 @@ namespace Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string AndroidId {
-                get {
-                    try {
-                        return ((string)(this[this.tableUsers.AndroidIdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AndroidId\' in table \'Users\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableUsers.AndroidIdColumn] = value;
-                }
+            public bool IsAuthKeyNull() {
+                return this.IsNull(this.tableUsers.AuthKeyColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string IOSId {
-                get {
-                    try {
-                        return ((string)(this[this.tableUsers.IOSIdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'IOSId\' in table \'Users\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableUsers.IOSIdColumn] = value;
-                }
+            public void SetAuthKeyNull() {
+                this[this.tableUsers.AuthKeyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAuthTimeNull() {
+                return this.IsNull(this.tableUsers.AuthTimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAuthTimeNull() {
+                this[this.tableUsers.AuthTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7397,30 +7367,6 @@ namespace Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDeveloperIdNull() {
                 this[this.tableUsers.DeveloperIdColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsAndroidIdNull() {
-                return this.IsNull(this.tableUsers.AndroidIdColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetAndroidIdNull() {
-                this[this.tableUsers.AndroidIdColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIOSIdNull() {
-                return this.IsNull(this.tableUsers.IOSIdColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIOSIdNull() {
-                this[this.tableUsers.IOSIdColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -12279,22 +12225,17 @@ SELECT Id, Name, Description, Race, Speed FROM Units WHERE (Id = @Id)";
             tableMapping.DataSetTable = "Users";
             tableMapping.ColumnMappings.Add("UserId", "UserId");
             tableMapping.ColumnMappings.Add("AuthKey", "AuthKey");
-            tableMapping.ColumnMappings.Add("AuthCreateTime", "AuthCreateTime");
+            tableMapping.ColumnMappings.Add("AuthTime", "AuthTime");
             tableMapping.ColumnMappings.Add("DeveloperId", "DeveloperId");
-            tableMapping.ColumnMappings.Add("AndroidId", "AndroidId");
-            tableMapping.ColumnMappings.Add("IOSId", "IOSId");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [info].[Users] ([AuthKey], [AuthCreateTime], [DeveloperId], [AndroidI" +
-                "d], [IOSId]) VALUES (@AuthKey, @AuthCreateTime, @DeveloperId, @AndroidId, @IOSId" +
-                ")";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Users] ([AuthKey], [AuthTime], [DeveloperId]) VALUES (@AuthKey" +
+                ", @AuthTime, @DeveloperId)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AuthKey", global::System.Data.SqlDbType.Text, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AuthKey", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AuthCreateTime", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AuthCreateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DeveloperId", global::System.Data.SqlDbType.Text, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DeveloperId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AndroidId", global::System.Data.SqlDbType.Text, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AndroidId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IOSId", global::System.Data.SqlDbType.Text, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IOSId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AuthKey", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AuthKey", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AuthTime", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AuthTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DeveloperId", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DeveloperId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -12307,24 +12248,23 @@ SELECT Id, Name, Description, Race, Speed FROM Units WHERE (Id = @Id)";
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT UserId, AuthKey, AuthCreateTime, DeveloperId, AndroidId, IOSId FROM info.U" +
-                "sers";
+            this._commandCollection[0].CommandText = "SELECT UserId, AuthKey, AuthTime, DeveloperId FROM dbo.Users";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT        UserId, AuthKey, AuthCreateTime, DeveloperId, AndroidId, IOSId\r\nFRO" +
-                "M            info.Users\r\nWHERE        (AuthKey LIKE @AuthKey)";
+            this._commandCollection[1].CommandText = @"
+IF 0 = (SELECT COUNT(*) FROM dbo.Users WHERE DeveloperId = @DeveloperId)
+BEGIN
+    INSERT INTO dbo.Users (DeveloperId, AuthTime, AuthKey)
+    VALUES (@DeveloperId, GETDATE(), @DeveloperId)
+END
+
+SELECT * FROM dbo.Users WHERE DeveloperId = @DeveloperId";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AuthKey", global::System.Data.SqlDbType.Text, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, "AuthKey", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "SELECT        UserId, AuthKey, AuthCreateTime, DeveloperId, AndroidId, IOSId\r\nFRO" +
-                "M            info.Users\r\nWHERE        (DeveloperId LIKE @DeveloperId)";
-            this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DeveloperId", global::System.Data.SqlDbType.Text, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, "DeveloperId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DeveloperId", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -12355,46 +12295,10 @@ SELECT Id, Name, Description, Race, Speed FROM Units WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAuthKey(DatabaseDataSet.UsersDataTable dataTable, string AuthKey) {
+        public virtual int FillBy(DatabaseDataSet.UsersDataTable dataTable, string DeveloperId) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((AuthKey == null)) {
-                throw new global::System.ArgumentNullException("AuthKey");
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(AuthKey));
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual DatabaseDataSet.UsersDataTable GetDataByAuthKey(string AuthKey) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((AuthKey == null)) {
-                throw new global::System.ArgumentNullException("AuthKey");
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(AuthKey));
-            }
-            DatabaseDataSet.UsersDataTable dataTable = new DatabaseDataSet.UsersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByDeveloperId(DatabaseDataSet.UsersDataTable dataTable, string DeveloperId) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((DeveloperId == null)) {
-                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("DeveloperId");
             }
             else {
                 this.Adapter.SelectCommand.Parameters[0].Value = ((string)(DeveloperId));
@@ -12410,10 +12314,10 @@ SELECT Id, Name, Description, Race, Speed FROM Units WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual DatabaseDataSet.UsersDataTable GetDataByDeveloperId(string DeveloperId) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
+        public virtual DatabaseDataSet.UsersDataTable GetDataBy(string DeveloperId) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((DeveloperId == null)) {
-                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("DeveloperId");
             }
             else {
                 this.Adapter.SelectCommand.Parameters[0].Value = ((string)(DeveloperId));
@@ -12456,31 +12360,24 @@ SELECT Id, Name, Description, Race, Speed FROM Units WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string AuthKey, System.DateTime AuthCreateTime, string DeveloperId, string AndroidId, string IOSId) {
+        public virtual int Insert(string AuthKey, global::System.Nullable<global::System.DateTime> AuthTime, string DeveloperId) {
             if ((AuthKey == null)) {
-                throw new global::System.ArgumentNullException("AuthKey");
+                this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.InsertCommand.Parameters[0].Value = ((string)(AuthKey));
             }
-            this.Adapter.InsertCommand.Parameters[1].Value = ((System.DateTime)(AuthCreateTime));
+            if ((AuthTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((System.DateTime)(AuthTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
             if ((DeveloperId == null)) {
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.InsertCommand.Parameters[2].Value = ((string)(DeveloperId));
-            }
-            if ((AndroidId == null)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(AndroidId));
-            }
-            if ((IOSId == null)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((string)(IOSId));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 

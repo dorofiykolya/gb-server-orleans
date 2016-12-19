@@ -1,21 +1,39 @@
 ﻿using System.Threading.Tasks;
 using Database;
 using Newtonsoft.Json.Linq;
+using SocketProxy.Packets;
 
 namespace SocketProxy
 {
     public class AuthManager
     {
-        public Task<bool> CheckAuthByDevelopers(string developerId)
+        public Task<Auth> GetAuthByDevelopers(string developerId)
         {
-            var userId = Task.Run(() => DatabaseUsers.GetUserIdByDeveloperId(developerId));
-
-            return Task.FromResult(userId.Result > 0);
+            var user = Task.Run(() =>
+            {
+                var table = DatabaseUsers.GetByDeveloperId(developerId);
+                return new Auth
+                {
+                    UserId = table.UserId,
+                    AuthKey = table.AuthKey,
+                    AuthTime = table.AuthTime
+                };
+            });
+            return user;
         }
 
-        public Task<bool> CheckAuthByBrowser(JToken keyValue)
+        public Task<AuthState> CheckAuth(int userAuthUserKey, string userAuthAuthKey, int userAuthAuthTs, bool userAuthIsBrowser)
         {
-            return Task.FromResult(true);
+            return Task.FromResult(AuthState.Success);
         }
+    }
+
+    public enum AuthState
+    {
+        Success = 0,
+        IncorrectUserKey = 1,
+        SessionTimeOut = 2,
+        IncorrectAuthKey = 3,
+        Error = 4
     }
 }

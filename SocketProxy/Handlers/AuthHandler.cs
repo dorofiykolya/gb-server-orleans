@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
-using DotNetty.Common.Internal.Logging;
+﻿using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
-using Newtonsoft.Json.Linq;
 using SocketProxy.Decoders;
+using SocketProxy.Handlers;
+using SocketProxy.Packets;
+using SocketProxy.Requests;
 
 namespace SocketProxy
 {
@@ -12,11 +13,10 @@ namespace SocketProxy
         private readonly IInternalLogger _logger;
         private bool _authorized = false;
         private bool _checkAuth = false;
-        private readonly ConcurrentQueue<Packet> _queue;
+        private Auth _auth;
 
         public AuthHandler(AuthManager authManager, IInternalLogger logger)
         {
-            _queue = new ConcurrentQueue<Packet>();
             _authManager = authManager;
             _logger = logger;
         }
@@ -25,47 +25,50 @@ namespace SocketProxy
         {
             if (_authorized)
             {
-                ctx.FireChannelRead(msg);
+                ctx.FireChannelRead(new UserPacket(msg, _auth));
             }
             else if (!_checkAuth)
             {
-                var jObject = msg.GetData<JObject>();
-                if (jObject != null)
+                switch ((string)msg.Command)
                 {
-                    var isValid = false;
-                    foreach (var key in jObject)
-                    {
-                        switch (key.Key)
+                    case "authByDeveloper":
+                        var auth = await _authManager.GetAuthByDevelopers(msg.ContentAs<AuthByDeveloperPacket>().DeveloperId);
+                        _auth = auth;
+                        var info = new UserAuthInfoRequest { userAuthInfo = auth };
+                        ctx.WriteAndFlushAsync(info);
+                        break;
+                    case "authByAndroid":
+                        _checkAuth = true;
+                        break;
+                    case "authByBrowser":
+                        _checkAuth = true;
+                        break;
+                    case "authByIOS":
+                        _checkAuth = true;
+                        break;
+                    case "userAuth":
+                        var userAuth = msg.ContentAs<UserAuthPacket>();
+                        var authState = await _authManager.CheckAuth(userAuth.UserKey, userAuth.AuthKey, userAuth.AuthTs, userAuth.IsBrowser);
+                        var data = new UserAuthStateRequest
                         {
-                            case "authByDevelopers":
-                                _checkAuth = true;
-                                isValid = await _authManager.CheckAuthByDevelopers(key.Value["userKey"].Value<string>());
-                                break;
-                            case "authByAndroid":
-                                _checkAuth = true;
-                                break;
-                            case "authByBrowser":
-                                _checkAuth = true;
-                                isValid = await _authManager.CheckAuthByBrowser(key.Value);
-                                break;
-                            case "authByIOS":
-                                _checkAuth = true;
-                                break;
-                            default:
-                                _logger.Error("InvalidAuth");
-                                await ctx.CloseAsync();
-                                break;
-                        }
-                    }
-                    if (isValid)
-                    {
+                            UserAuthState = new UserAuthStateData
+                            {
+                                State = (int)authState,
+                                MinVersion = "0.0.0"
+                            }
+                        };
+                        ctx.WriteAndFlushAsync(data);
 
-                    }
+                        if (authState == AuthState.Success)
+                        {
+                            _authorized = true;
+                        }
+                        break;
+                    default:
+                        _logger.Error("InvalidAuth");
+                        ctx.CloseAsync();
+                        break;
                 }
-            }
-            else
-            {
-                _queue.Enqueue(msg);
             }
         }
     }
