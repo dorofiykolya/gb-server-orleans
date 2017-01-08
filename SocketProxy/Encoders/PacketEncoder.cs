@@ -27,6 +27,7 @@ namespace SocketProxy.Decoders
                 var bytes = Encoding.UTF8.GetBytes((string)message);
                 var compressed = Ionic.Zlib.ZlibStream.CompressBuffer(bytes);
                 var len = compressed.Length;
+                
                 var buffer = context.Allocator.Buffer(len + 4);
                 if (buffer.Order != ByteOrder.BigEndian)
                 {
@@ -34,7 +35,7 @@ namespace SocketProxy.Decoders
                 }
                 buffer.WriteInt(len);
                 buffer.WriteBytes(compressed);
-                context.WriteAndFlushAsync(buffer);
+                output.Add(buffer);
             }
         }
     }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocketProxy
+namespace Grains
 {
-    class ClientUser
+    public interface IUserGrain : Orleans.IGrain
     {
+        Task InitUser();
     }
 }

@@ -14,12 +14,12 @@ namespace SocketProxy
             _map[command] = typeof(T);
         }
 
-        public Task<object> ConvertAsync(string command, object value)
+        public Task<object> ConvertAsync(string command, object value, out Type type)
         {
-            Type type;
             if (_map.TryGetValue(command, out type))
             {
-                return Task.Run(() => ((JObject) value).ToObject(type));
+                Type objectType = type;
+                return Task.Run(() => ((JObject) value).ToObject(objectType));
             }
             return Task.FromResult(value);
         }

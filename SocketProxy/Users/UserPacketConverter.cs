@@ -2,12 +2,13 @@
 
 namespace SocketProxy
 {
-    public class ClientPacketConverter : PacketConverter
+    public class UserPacketConverter : PacketConverter
     {
-        public ClientPacketConverter()
+        public UserPacketConverter()
         {
             Add<AuthByDeveloperPacket>("authByDeveloper");
             Add<UserAuthPacket>("userAuth");
+            Add<InitUserPacket>("initUser");
         }
     }
 }

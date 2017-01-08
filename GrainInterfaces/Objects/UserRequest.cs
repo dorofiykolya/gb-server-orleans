@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocketProxy
+namespace Grains
 {
-    class Client
+    [Serializable]
+    public class UserRequest
     {
+        public object Content;
     }
 }

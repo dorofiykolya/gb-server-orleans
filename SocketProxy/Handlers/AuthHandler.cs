@@ -1,9 +1,11 @@
-﻿using DotNetty.Common.Internal.Logging;
+﻿using System.Threading.Tasks;
+using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
 using SocketProxy.Decoders;
 using SocketProxy.Handlers;
 using SocketProxy.Packets;
 using SocketProxy.Requests;
+using SocketProxy.Users;
 
 namespace SocketProxy
 {
@@ -11,17 +13,21 @@ namespace SocketProxy
     {
         private readonly AuthManager _authManager;
         private readonly IInternalLogger _logger;
+        private readonly CommandFactoryProvider _provider;
         private bool _authorized = false;
         private bool _checkAuth = false;
         private Auth _auth;
+        private UserChannelHandler _userHandler;
+        private Task _authTask;
 
-        public AuthHandler(AuthManager authManager, IInternalLogger logger)
+        public AuthHandler(AuthManager authManager, IInternalLogger logger, CommandFactoryProvider provider)
         {
             _authManager = authManager;
             _logger = logger;
+            _provider = provider;
         }
 
-        protected override async void ChannelRead0(IChannelHandlerContext ctx, Packet msg)
+        protected override void ChannelRead0(IChannelHandlerContext ctx, Packet msg)
         {
             if (_authorized)
             {
@@ -29,13 +35,20 @@ namespace SocketProxy
             }
             else if (!_checkAuth)
             {
-                switch ((string)msg.Command)
+                switch ((string)msg.CommandKey)
                 {
                     case "authByDeveloper":
-                        var auth = await _authManager.GetAuthByDevelopers(msg.ContentAs<AuthByDeveloperPacket>().DeveloperId);
-                        _auth = auth;
-                        var info = new UserAuthInfoRequest { userAuthInfo = auth };
-                        ctx.WriteAndFlushAsync(info);
+                        _authTask?.Dispose();
+                        _authTask = Task.Factory.StartNew(() =>
+                       {
+                           var authTask = _authManager.GetAuthByDevelopers(msg.ContentAs<AuthByDeveloperPacket>().DeveloperId);
+                           authTask.Wait();
+                           _auth = authTask.Result;
+                           var info = new UserAuthInfoRequest { userAuthInfo = _auth };
+                           InitializeUserHandler(ctx, info.userAuthInfo.UserId);
+                           ctx.WriteAndFlushAsync(info);
+                       });
+                        _authorized = true;
                         break;
                     case "authByAndroid":
                         _checkAuth = true;
@@ -48,21 +61,28 @@ namespace SocketProxy
                         break;
                     case "userAuth":
                         var userAuth = msg.ContentAs<UserAuthPacket>();
-                        var authState = await _authManager.CheckAuth(userAuth.UserKey, userAuth.AuthKey, userAuth.AuthTs, userAuth.IsBrowser);
-                        var data = new UserAuthStateRequest
-                        {
-                            UserAuthState = new UserAuthStateData
-                            {
-                                State = (int)authState,
-                                MinVersion = "0.0.0"
-                            }
-                        };
-                        ctx.WriteAndFlushAsync(data);
+                        _authTask?.Dispose();
+                        _authTask = Task.Factory.StartNew(() =>
+                       {
+                           var authState = _authManager.CheckAuth(userAuth.UserKey, userAuth.AuthKey, userAuth.AuthTs, userAuth.IsBrowser);
+                           Task.WaitAll(authState);
+                           var data = new UserAuthStateRequest
+                           {
+                               UserAuthState = new UserAuthStateData
+                               {
+                                   State = (int)authState.Result,
+                                   MinVersion = "0.0.0"
+                               }
+                           };
+                           InitializeUserHandler(ctx, userAuth.UserKey);
+                           ctx.WriteAndFlushAsync(data);
 
-                        if (authState == AuthState.Success)
-                        {
-                            _authorized = true;
-                        }
+                           if (authState.Result == AuthState.Success)
+                           {
+                               _authorized = true;
+                           }
+                       });
+
                         break;
                     default:
                         _logger.Error("InvalidAuth");
@@ -70,6 +90,16 @@ namespace SocketProxy
                         break;
                 }
             }
+        }
+
+        protected void InitializeUserHandler(IChannelHandlerContext ctx, int userId)
+        {
+            if (_userHandler != null)
+            {
+                ctx.Channel.Pipeline.Remove(_userHandler);
+            }
+            _userHandler = new UserChannelHandler(_logger, userId, _provider);
+            ctx.Channel.Pipeline.AddLast(_userHandler);
         }
     }
 }

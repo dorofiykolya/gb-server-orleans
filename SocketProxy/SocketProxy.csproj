@@ -180,19 +180,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientPacketConverter.cs" />
-    <Compile Include="Client\Auth.cs" />
-    <Compile Include="Client\UserCommandProcessor.cs" />
+    <Compile Include="Packets\InitUserPacket.cs" />
+    <Compile Include="ProxyServer.cs" />
+    <Compile Include="Users\CommandFactoryProvider.cs" />
+    <Compile Include="Users\Commands\InitUserCommand.cs" />
+    <Compile Include="Users\UserCommandFactoryProvider.cs" />
+    <Compile Include="Users\UserPacketsQueue.cs" />
+    <Compile Include="Users\CommandResult.cs" />
+    <Compile Include="Users\UserPacketConverter.cs" />
+    <Compile Include="Auths\Auth.cs" />
+    <Compile Include="Users\CommandProcessor.cs" />
     <Compile Include="Decoders\Packet.cs" />
     <Compile Include="Encoders\PacketEncoder.cs" />
     <Compile Include="Encoders\Request.cs" />
     <Compile Include="Handlers\AuthHandler.cs" />
-    <Compile Include="Client\AuthManager.cs" />
-    <Compile Include="Client\Client.cs" />
+    <Compile Include="Auths\AuthManager.cs" />
     <Compile Include="Handlers\UserChannelHandler.cs" />
-    <Compile Include="Client\ClientManager.cs" />
     <Compile Include="Handlers\ClientPolicyHandler.cs" />
-    <Compile Include="Client\ClientUser.cs" />
     <Compile Include="Handlers\LoggerHandler.cs" />
     <Compile Include="Decoders\PacketDecoder.cs" />
     <Compile Include="Handlers\PolicyChecked.cs" />
@@ -206,7 +210,8 @@
     <Compile Include="ConsoleServerLogger.cs" />
     <Compile Include="Requests\UserAuthInfoRequest.cs" />
     <Compile Include="Requests\UserAuthStateRequest.cs" />
-    <Compile Include="Users\Commands\Command.cs" />
+    <Compile Include="Users\Command.cs" />
+    <Compile Include="Users\UserContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -216,6 +221,10 @@
     <ProjectReference Include="..\Database\Database.csproj">
       <Project>{e2ac1d3f-b311-44d6-8862-13ad6fa12935}</Project>
       <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj">
+      <Project>{c624f7fc-19c9-4b0a-a6e4-2911e2b9ec6e}</Project>
+      <Name>GrainInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{2aa0c092-3e71-4317-a66e-bc1d02949f7d}</Project>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,16 @@ namespace SocketClient
                             ConnectTo("127.0.0.1", port);
                         }
                         break;
+                    case "status":
+                        if (_client != null && _client.Client.Poll(10, SelectMode.SelectWrite) && _client.Connected)
+                        {
+                            Console.WriteLine("socket connected");
+                        }
+                        else
+                        {
+                            Console.WriteLine("socket not connected");
+                        }
+                        break;
                     case "connect":
                         {
                             Console.WriteLine("Enter HOST:PORT");
@@ -40,6 +51,7 @@ namespace SocketClient
                         }
                         break;
                     case "close":
+                        Close();
                         break;
                     case "send":
                         Console.WriteLine("Enter message");
@@ -65,12 +77,19 @@ namespace SocketClient
         {
             if (_client != null && _client.Connected)
             {
-                var bytes = Encoding.UTF8.GetBytes(message);
-                bytes = ZlibStream.CompressBuffer(bytes);
-                var len = BitConverter.GetBytes(bytes.Length);
-                Array.Reverse(len);
-                _client.GetStream().Write(len, 0, 4);
-                _client.GetStream().Write(bytes, 0, bytes.Length);
+                try
+                {
+                    var bytes = Encoding.UTF8.GetBytes(message);
+                    bytes = ZlibStream.CompressBuffer(bytes);
+                    var len = BitConverter.GetBytes(bytes.Length);
+                    Array.Reverse(len);
+                    _client.GetStream().Write(len, 0, 4);
+                    _client.GetStream().Write(bytes, 0, bytes.Length);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
             }
         }
 
@@ -80,9 +99,17 @@ namespace SocketClient
             {
                 _client.Close();
             }
+            try
+            {
+                _client = new System.Net.Sockets.TcpClient();
+                _client.Connect(host, port);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return;
+            }
 
-            _client = new System.Net.Sockets.TcpClient();
-            _client.Connect(host, port);
             var thread = new Thread(() =>
             {
                 var stream = _client.GetStream();
@@ -93,7 +120,7 @@ namespace SocketClient
                 while (true)
                 {
                     Thread.Sleep(100);
-                    if (!_client.Connected)
+                    if (_client == null || !_client.Connected)
                     {
                         break;
                     }

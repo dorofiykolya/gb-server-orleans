@@ -1,4 +1,5 @@
-﻿using SocketProxy.Decoders;
+﻿using System;
+using SocketProxy.Decoders;
 
 namespace SocketProxy.Handlers
 {
@@ -15,7 +16,11 @@ namespace SocketProxy.Handlers
 
         public int UserId => _auth.UserId;
 
-        public object Command => _packet.Command;
+        public object CommandKey => _packet.CommandKey;
+
+        public Type ContentType => _packet.ContentType;
+
+        public object Content => _packet.Content;
 
         public T ContentAs<T>() where T : class
         {
@@ -23,12 +28,21 @@ namespace SocketProxy.Handlers
         }
     }
 
-    public class UserPacket<T> : UserPacket where T : class
+    public class UserPacket<T> where T : class
     {
-        public UserPacket(Packet packet, Auth auth) : base(packet, auth)
+        private readonly UserPacket _userPacket;
+
+        public UserPacket(UserPacket userPacket)
         {
+            _userPacket = userPacket;
         }
 
-        public T Content => base.ContentAs<T>();
+        public Type ContentType => _userPacket.ContentType;
+
+        public int UserId => _userPacket.UserId;
+
+        public object CommandKey => _userPacket.CommandKey;
+
+        public T Content => _userPacket.ContentAs<T>();
     }
 }

@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Orleans;
 
 namespace SocketProxy.Users.Commands
 {
-    public class Command<T>
+    public class InitUserCommand : Command<InitUserCommand>
     {
-        protected virtual void Execute(T data)
+        protected override Task Execute()
         {
-
-        }
-
-        public void TryExecute(object data)
-        {
-            Execute((T)data);
+            
+            return TaskDone.Done;
         }
     }
 }

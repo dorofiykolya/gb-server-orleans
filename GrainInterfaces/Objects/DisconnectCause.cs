@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocketProxy
+namespace Grains.Objects
 {
-    public class ClientManager
+    [Serializable]
+    public class DisconnectCause
     {
+        public string Message;
     }
 }

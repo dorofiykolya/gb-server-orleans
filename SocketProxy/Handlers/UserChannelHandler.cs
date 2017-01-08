@@ -2,26 +2,55 @@
 using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
 using SocketProxy.Handlers;
+using SocketProxy.Users;
 
 namespace SocketProxy
 {
     public class UserChannelHandler : SimpleChannelInboundHandler<UserPacket>
     {
-        private readonly ClientManager _clientManager;
-        private readonly AuthManager _authManager;
         private readonly IInternalLogger _logger;
-        private readonly UserCommandProcessor _userCommandProcessor;
+        private readonly int _userId;
+        private readonly CommandFactoryProvider _provider;
+        private IChannelHandlerContext _context;
+        private UserContext _userContext;
 
-        public UserChannelHandler(ClientManager clientManager, AuthManager authManager, IInternalLogger logger)
+        public UserChannelHandler(IInternalLogger logger, int userId, CommandFactoryProvider provider)
         {
-            _clientManager = clientManager;
-            _authManager = authManager;
             _logger = logger;
-            _userCommandProcessor = new UserCommandProcessor(this);
+            _userId = userId;
+            _provider = provider;
+        }
+
+        public override void HandlerAdded(IChannelHandlerContext context)
+        {
+            _context = context;
+            _userContext = new UserContext(_context, _userId, _provider);
+            base.HandlerAdded(context);
+        }
+
+        public override void HandlerRemoved(IChannelHandlerContext context)
+        {
+            if (_userContext != null)
+            {
+                _userContext.Dispose();
+            }
+            _context = null;
+            base.HandlerRemoved(context);
+        }
+
+        public override void ChannelUnregistered(IChannelHandlerContext context)
+        {
+            if (_userContext != null)
+            {
+                _userContext.Dispose();
+            }
+            _context = null;
+            base.ChannelUnregistered(context);
         }
 
         public override void ExceptionCaught(IChannelHandlerContext contex, Exception e)
         {
+            _userContext.Dispose();
             _logger.Error(e);
             contex.CloseAsync();
         }
@@ -30,7 +59,7 @@ namespace SocketProxy
 
         protected override void ChannelRead0(IChannelHandlerContext ctx, UserPacket msg)
         {
-            _userCommandProcessor.Enqueue(msg);
+            _userContext.EnqueuePacket(msg);
         }
     }
 }

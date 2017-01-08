@@ -154,6 +154,10 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grains\Grains.csproj">
+      <Project>{a3785dbd-18c9-438c-bb03-97e8d34d931a}</Project>
+      <Name>Grains</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StorageProvider\StorageProvider.csproj">
       <Project>{54cfe534-565b-40cf-896c-b63475a8b9d7}</Project>
       <Name>StorageProvider</Name>

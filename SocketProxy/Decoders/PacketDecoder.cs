@@ -57,13 +57,15 @@ namespace SocketProxy.Decoders
                         var data = JsonConvert.DeserializeObject(json);
                         foreach (var node in (JObject)data)
                         {
-                            var converted = await _packetsConverter.ConvertAsync(node.Key, node.Value);
+                            Type contentType;
+                            var converted = await _packetsConverter.ConvertAsync(node.Key, node.Value, out contentType);
                             context.FireChannelRead(new Packet
                             {
                                 Bytes = packet,
-                                Command = node.Key,
+                                CommandKey = node.Key,
                                 Content = converted,
-                                Data = data
+                                Data = data,
+                                ContentType = contentType
                             });
                         }
                         _readLength = true;
