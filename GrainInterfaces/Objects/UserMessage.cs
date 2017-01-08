@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grains
+namespace Grains.Objects
 {
-    public interface IUserGrain : Orleans.IGrainWithIntegerKey
+    [Serializable]
+    public class UserMessage
     {
-        Task InitUser();
+        public int UserId;
+        public string Message;
     }
 }

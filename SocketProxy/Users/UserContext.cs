@@ -106,7 +106,7 @@ namespace SocketProxy.Users
                 Message = "new connection"
             });
             var observer = await GrainClient.GrainFactory.CreateObjectReference<IUserConnectionObserver>(this);
-            await connectionGrain.Subscribe(_observer);
+            await connectionGrain.Subscribe(observer);
 
             bool disposed;
             lock (_sync)

@@ -13,6 +13,7 @@ namespace SocketProxy.Users
         public UserCommandFactoryProvider()
         {
             Add<InitUserPacket, InitUserCommand>();
+            Add<UserMessagePacket, UserMessageCommand>();
         }
     }
 }

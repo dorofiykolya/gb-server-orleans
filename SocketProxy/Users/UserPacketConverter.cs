@@ -9,6 +9,7 @@ namespace SocketProxy
             Add<AuthByDeveloperPacket>("authByDeveloper");
             Add<UserAuthPacket>("userAuth");
             Add<InitUserPacket>("initUser");
+            Add<UserMessagePacket>("message");
         }
     }
 }

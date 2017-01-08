@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ionic.Zlib;
+using Newtonsoft.Json;
 
 namespace SocketClient
 {
@@ -40,6 +41,23 @@ namespace SocketClient
                             Console.WriteLine("socket not connected");
                         }
                         break;
+                    case "message":
+                        {
+                            Console.WriteLine("Enter user id");
+                            var userId = Console.ReadLine();
+                            Console.WriteLine("Enter message");
+                            var messageData = Console.ReadLine();
+
+                            Send(JsonConvert.SerializeObject(new
+                            {
+                                message = new
+                                {
+                                    userId = int.Parse(userId),
+                                    message = messageData
+                                }
+                            }));
+                            break;
+                        }
                     case "connect":
                         {
                             Console.WriteLine("Enter HOST:PORT");
@@ -54,11 +72,13 @@ namespace SocketClient
                         Close();
                         break;
                     case "send":
-                        Console.WriteLine("Enter message");
-                        var message = Console.ReadLine();
-                        Send(message);
-                        Console.WriteLine("Message sent");
-                        break;
+                        {
+                            Console.WriteLine("Enter message");
+                            var message = Console.ReadLine();
+                            Send(message);
+                            Console.WriteLine("Message sent");
+                            break;
+                        }
                     case "auth":
                         Console.WriteLine("Enter developerId");
                         var developerId = Console.ReadLine();

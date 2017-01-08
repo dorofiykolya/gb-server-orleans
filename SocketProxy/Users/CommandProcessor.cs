@@ -47,6 +47,7 @@ namespace SocketProxy
                 }
                 catch (Exception exception)
                 {
+                    Console.WriteLine(exception.Message);
                     //TODO:LOG ERROR
                 }
 

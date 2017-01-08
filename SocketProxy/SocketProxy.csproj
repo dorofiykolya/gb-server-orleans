@@ -181,9 +181,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Packets\InitUserPacket.cs" />
+    <Compile Include="Packets\UserMessagePacket.cs" />
     <Compile Include="ProxyServer.cs" />
     <Compile Include="Users\CommandFactoryProvider.cs" />
     <Compile Include="Users\Commands\InitUserCommand.cs" />
+    <Compile Include="Users\Commands\UserMessageCommand.cs" />
     <Compile Include="Users\UserCommandFactoryProvider.cs" />
     <Compile Include="Users\UserPacketsQueue.cs" />
     <Compile Include="Users\CommandResult.cs" />
@@ -243,9 +245,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
