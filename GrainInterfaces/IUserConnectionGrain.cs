@@ -11,6 +11,6 @@ namespace Grains
         Task Unsubscribe(IUserConnectionObserver observer);
         Task Disconnect(DisconnectCause cause);
         Task Request(UserRequest request);
-
+        Task<bool> IsOnline();
     }
 }

@@ -67,6 +67,11 @@ namespace SocketProxy.Users
             _context.WriteAndFlushAsync(request.Content);
         }
 
+        public Task Send(object value)
+        {
+            return _context.WriteAndFlushAsync(value);
+        }
+
         public async void EnqueuePacket(UserPacket packet)
         {
             _commandProcessor.Enqueue(packet);

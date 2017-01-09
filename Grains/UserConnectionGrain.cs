@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Grains.Objects;
 using Grains.Observers;
@@ -70,6 +67,11 @@ namespace Grains
             }
 
             return TaskDone.Done;
+        }
+
+        public Task<bool> IsOnline()
+        {
+            return Task.FromResult(_subscriptionManager.Count != 0);
         }
     }
 }

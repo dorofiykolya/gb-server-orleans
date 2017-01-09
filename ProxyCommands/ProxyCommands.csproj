@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeUserNameCommand.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="GetUserNameCommand.cs" />
     <Compile Include="InitUserCommand.cs" />
     <Compile Include="IUserContextProvider.cs" />
     <Compile Include="PacketCommandAttribute.cs" />

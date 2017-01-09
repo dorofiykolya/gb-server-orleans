@@ -55,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IUserConnectionGrain.cs" />
+    <Compile Include="IUserInfoGrain.cs" />
+    <Compile Include="IUserOnlineBucket.cs" />
     <Compile Include="Objects\UserMessage.cs" />
     <Compile Include="Observers\IUserConnectionObserver.cs" />
     <Compile Include="IUserGrain.cs" />

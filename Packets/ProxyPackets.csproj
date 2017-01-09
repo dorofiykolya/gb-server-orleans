@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="Attributes\PacketIdAttribute.cs" />
     <Compile Include="AuthByDeveloperPacket.cs" />
+    <Compile Include="ChangeUserNamePacket.cs" />
+    <Compile Include="GetUserNamePacket.cs" />
     <Compile Include="InitUserPacket.cs" />
     <Compile Include="PacketConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
