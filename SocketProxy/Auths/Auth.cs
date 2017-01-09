@@ -5,11 +5,13 @@ namespace SocketProxy
 {
     public class Auth
     {
-        [JsonProperty("userKey")]
+        [JsonProperty("userId")]
         public int UserId;
         [JsonProperty("authKey")]
         public string AuthKey;
         [JsonProperty("authTime")]
         public DateTime AuthTime;
+        [JsonProperty("isNewAppUser")]
+        public bool IsNewAppUser;
     }
 }

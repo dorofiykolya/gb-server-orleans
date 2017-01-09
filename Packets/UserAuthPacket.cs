@@ -8,8 +8,8 @@ namespace ProxyPackets
     [PacketId("userAuth")]
     public class UserAuthPacket
     {
-        [JsonProperty("userKey")]
-        public int UserKey;
+        [JsonProperty("userId")]
+        public int UserId;
 
         [JsonProperty("authTS")]
         public int AuthTs;

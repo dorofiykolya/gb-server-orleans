@@ -34,9 +34,10 @@ namespace SocketProxy
 
         static OrleansClientResult RunGrainClient()
         {
+            Console.WriteLine("Wait To Start Silo");
             Thread.Sleep(1000);
             var result = new OrleansClientResult();
-            var count = 3;
+            var count = 5;
             while (count-- > 0)
             {
                 try
@@ -87,7 +88,9 @@ namespace SocketProxy
                         //test decode / encode
                         //pipeline.AddLast(new StringEncoder(), new StringDecoder());
                         //packet encoder
-                        pipeline.AddLast(new PacketDecoder(packetsConverter, logger), new PacketEncoder(logger));
+                        pipeline.AddLast(new PacketEncoder(logger));
+                        //packet decoder
+                        pipeline.AddLast(new PacketDecoder(packetsConverter, logger));
                         //auth
                         pipeline.AddLast(new AuthHandler(authManager, logger, userCommandProvider));
                     }));

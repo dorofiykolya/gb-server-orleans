@@ -64,7 +64,7 @@ namespace SocketProxy
                         _authTask?.Dispose();
                         _authTask = Task.Factory.StartNew(() =>
                        {
-                           var authState = _authManager.CheckAuth(userAuth.UserKey, userAuth.AuthKey, userAuth.AuthTs, userAuth.IsBrowser);
+                           var authState = _authManager.CheckAuth(userAuth.UserId, userAuth.AuthKey, userAuth.AuthTs, userAuth.IsBrowser);
                            Task.WaitAll(authState);
                            var data = new UserAuthStateRequest
                            {
@@ -74,7 +74,7 @@ namespace SocketProxy
                                    MinVersion = "0.0.0"
                                }
                            };
-                           InitializeUserHandler(ctx, userAuth.UserKey);
+                           InitializeUserHandler(ctx, userAuth.UserId);
                            ctx.WriteAndFlushAsync(data);
 
                            if (authState.Result == AuthState.Success)

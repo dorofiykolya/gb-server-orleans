@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using DotNetty.Buffers;
-using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
-using Ionic.Zlib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ProxyPackets;
@@ -60,14 +57,29 @@ namespace SocketProxy.Decoders
                         {
                             Type contentType;
                             var converted = await _packetsConverter.ConvertAsync(node.Key, node.Value, out contentType);
-                            context.FireChannelRead(new Packet
+                            if (contentType != null)
                             {
-                                Bytes = packet,
-                                CommandKey = node.Key,
-                                Content = converted,
-                                Data = data,
-                                ContentType = contentType
-                            });
+                                context.FireChannelRead(new Packet
+                                {
+                                    Bytes = packet,
+                                    CommandKey = node.Key,
+                                    Content = converted,
+                                    Data = data,
+                                    ContentType = contentType
+                                });
+                            }
+                            else
+                            {
+#pragma warning disable 4014
+                                context.WriteAndFlushAsync(new
+                                {
+                                    error = new
+                                    {
+                                        message = $"command not found: \"{node.Key}\""
+                                    }
+                                });
+                            }
+
                         }
                         _readLength = true;
                     }
@@ -78,6 +90,7 @@ namespace SocketProxy.Decoders
                     }
                 }
                 break;
+#pragma warning restore 4014
             }
         }
     }
