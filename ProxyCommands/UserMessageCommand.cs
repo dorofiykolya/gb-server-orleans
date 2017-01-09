@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grains;
 using Grains.Objects;
 using Orleans;
-using SocketProxy.Packets;
+using ProxyPackets;
+using SocketProxy.Users;
 
-namespace SocketProxy.Users.Commands
+namespace ProxyCommands
 {
+    [PacketCommand(typeof(UserMessagePacket))]
     public class UserMessageCommand : Command<UserMessagePacket>
     {
         protected override Task Execute()

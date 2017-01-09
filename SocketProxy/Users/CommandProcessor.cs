@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using DotNetty.Common.Internal;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using ProxyCommands;
 using SocketProxy.Decoders;
 using SocketProxy.Handlers;
 using SocketProxy.Users;
-using SocketProxy.Users.Commands;
 
 namespace SocketProxy
 {

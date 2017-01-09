@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ProxyPackets.Attributes;
 
-namespace SocketProxy.Packets
+namespace ProxyPackets
 {
+    [Serializable]
+    [PacketId("message")]
     public class UserMessagePacket
     {
         [JsonProperty("userId")]

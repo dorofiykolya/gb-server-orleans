@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace SocketProxy
+namespace ProxyPackets
 {
     public class PacketConverter
     {
@@ -11,7 +11,12 @@ namespace SocketProxy
 
         protected void Add<T>(string command)
         {
-            _map[command] = typeof(T);
+            Add(typeof(T), command);
+        }
+
+        protected void Add(Type type, string command)
+        {
+            _map[command] = type;
         }
 
         public Task<object> ConvertAsync(string command, object value, out Type type)
@@ -19,7 +24,10 @@ namespace SocketProxy
             if (_map.TryGetValue(command, out type))
             {
                 Type objectType = type;
-                return Task.Run(() => ((JObject) value).ToObject(objectType));
+                return Task.Run(() =>
+                {
+                    return ((JObject) value).ToObject(objectType);
+                });
             }
             return Task.FromResult(value);
         }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using DotNetty.Common.Internal.Logging;
 using DotNetty.Transport.Channels;
+using ProxyPackets;
 using SocketProxy.Decoders;
 using SocketProxy.Handlers;
-using SocketProxy.Packets;
 using SocketProxy.Requests;
 using SocketProxy.Users;
 

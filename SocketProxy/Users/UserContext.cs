@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
@@ -9,11 +6,12 @@ using Grains;
 using Grains.Objects;
 using Grains.Observers;
 using Orleans;
+using ProxyCommands;
 using SocketProxy.Handlers;
 
 namespace SocketProxy.Users
 {
-    public class UserContext : IDisposable, IUserConnectionObserver
+    public class UserContext : IDisposable, IUserConnectionObserver, IUserContextProvider
     {
         private readonly object _sync = new object();
         private readonly IChannelHandlerContext _context;

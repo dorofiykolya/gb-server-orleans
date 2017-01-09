@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SocketProxy.Packets;
-using SocketProxy.Users.Commands;
+﻿using System.Reflection;
 
 namespace SocketProxy.Users
 {
@@ -12,8 +6,18 @@ namespace SocketProxy.Users
     {
         public UserCommandFactoryProvider()
         {
-            Add<InitUserPacket, InitUserCommand>();
-            Add<UserMessagePacket, UserMessageCommand>();
+            var types = typeof(PacketCommandAttribute).Assembly.GetTypes();
+            foreach (var type in types)
+            {
+                var attributes = type.GetCustomAttributes<PacketCommandAttribute>();
+                if (attributes != null)
+                {
+                    foreach (var attribute in attributes)
+                    {
+                        Add(attribute.Packet, type);
+                    }
+                }
+            }
         }
     }
 }

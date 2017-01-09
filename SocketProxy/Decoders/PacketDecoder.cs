@@ -7,6 +7,7 @@ using DotNetty.Transport.Channels;
 using Ionic.Zlib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ProxyPackets;
 
 namespace SocketProxy.Decoders
 {

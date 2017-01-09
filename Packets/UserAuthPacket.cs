@@ -1,7 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
+using ProxyPackets.Attributes;
 
-namespace SocketProxy.Packets
+namespace ProxyPackets
 {
+    [Serializable]
+    [PacketId("userAuth")]
     public class UserAuthPacket
     {
         [JsonProperty("userKey")]

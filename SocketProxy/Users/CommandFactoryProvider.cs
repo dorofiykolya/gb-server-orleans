@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SocketProxy.Users.Commands;
+using ProxyCommands;
 
 namespace SocketProxy.Users
 {
@@ -14,7 +10,12 @@ namespace SocketProxy.Users
 
         public void Add<TCommandType, TCommand>() where TCommand : ICommand, new()
         {
-            _commands[typeof(TCommandType)] = typeof(TCommand);
+            Add(typeof(TCommandType), typeof(TCommand));
+        }
+
+        protected void Add(Type commandType, Type command)
+        {
+            _commands[commandType] = command;
         }
 
         public ICommand CreateInstance(Type packetContentType)

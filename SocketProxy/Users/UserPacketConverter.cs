@@ -1,4 +1,6 @@
-﻿using SocketProxy.Packets;
+﻿using System.Reflection;
+using ProxyPackets;
+using ProxyPackets.Attributes;
 
 namespace SocketProxy
 {
@@ -6,10 +8,18 @@ namespace SocketProxy
     {
         public UserPacketConverter()
         {
-            Add<AuthByDeveloperPacket>("authByDeveloper");
-            Add<UserAuthPacket>("userAuth");
-            Add<InitUserPacket>("initUser");
-            Add<UserMessagePacket>("message");
+            var types = typeof(PacketIdAttribute).Assembly.GetTypes();
+            foreach (var type in types)
+            {
+                var attributes = type.GetCustomAttributes<PacketIdAttribute>();
+                if (attributes != null)
+                {
+                    foreach (var attribute in attributes)
+                    {
+                        Add(type, attribute.PacketKey);
+                    }
+                }
+            }
         }
     }
 }
