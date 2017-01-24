@@ -41,12 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Composite\Component.cs" />
+    <Compile Include="Composite\ComponentCollection.cs" />
     <Compile Include="Composite\Entity.cs" />
+    <Compile Include="Composite\Events\EventListenerDelegate.cs" />
     <Compile Include="Composite\Events\Event.cs" />
     <Compile Include="Composite\Events\EventDispatcher.cs" />
     <Compile Include="Composite\Events\IDispatcher.cs" />
     <Compile Include="Composite\Events\IEventDispatcher.cs" />
     <Compile Include="Composite\Events\IEventListener.cs" />
+    <Compile Include="Composite\IComponentCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

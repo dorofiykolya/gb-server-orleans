@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Composite
 {
     public class ComponentCollection : IComponentCollection, IDisposable
     {
+        private readonly Entity _entity;
+
+        public ComponentCollection(Entity entity)
+        {
+            _entity = entity;
+        }
+
         public void Dispose()
         {
         }

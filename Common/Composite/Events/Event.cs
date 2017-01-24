@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Events;
 
 namespace Common.Composite.Events
@@ -110,13 +111,6 @@ namespace Common.Composite.Events
             return this;
         }
 
-        public static T FromPool<T>(object type, bool bubbles = false, object data = null) where T : Event
-        {
-            return null;
-        }
-
-        /* INTERFACE common.system.IDisposable */
-
         public void Dispose()
         {
             _disposed = true;
@@ -136,6 +130,40 @@ namespace Common.Composite.Events
         protected virtual Event InitializeEvent(object[] args)
         {
             return this;
+        }
+
+        [ThreadStatic]
+        private static Dictionary<Type, Stack<Event>> eventPool = new Dictionary<Type, Stack<Event>>();
+
+        public static T FromPool<T>(object type, bool bubbles = false, object data = null) where T : Event
+        {
+            Event result;
+            Stack<Event> stack;
+            if (eventPool.TryGetValue(typeof(T), out stack) && stack.Count != 0)
+            {
+                result = stack.Pop().ReinitializeEvent(type, bubbles, data, null);
+            }
+            else
+            {
+                result = Activator.CreateInstance(typeof(T), type) as Event;
+                result.ReinitializeEvent(type, bubbles, data, null);
+            }
+            result._disposed = false;
+            result._inPool = false;
+            return (T)result;
+        }
+
+        public static void ToPool<T>(T evt) where T : Event
+        {
+            if (evt._inPool) return;
+            evt._data = evt._target = evt._currentTarget = null;
+            evt._inPool = true;
+            Stack<Event> stack;
+            if (!eventPool.TryGetValue(evt.GetType(), out stack))
+            {
+                eventPool[evt.GetType()] = stack = new Stack<Event>();
+            }
+            stack.Push(evt);
         }
     }
 }

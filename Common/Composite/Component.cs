@@ -57,6 +57,12 @@ namespace Common.Composite
         public event Action<Event> ADDED;
         public event Action<Event> REMOVED;
 
+        public Component()
+        {
+            MapEvent<Event>(Event.ADDED, DispatchAdded);
+            MapEvent<Event>(Event.REMOVED, DispatchRemoved);
+        }
+
         public string Name
         {
             get { return _name; }
@@ -184,9 +190,27 @@ namespace Common.Composite
             return null;
         }
 
-        public Entity Parent
+        public virtual Entity Parent
         {
             get { return _parent; }
+            set
+            {
+                if (value == this)
+                {
+                    throw new ArgumentException(this + ", An parent cannot be added as a child to itself or one of its children (or children's children, etc.)");
+                }
+                if (value != _parent)
+                {
+                    if (_parent != null)
+                    {
+                        _parent.RemoveComponent(this);
+                    }
+                    if (value != null)
+                    {
+                        value.AddComponent(this);
+                    }
+                }
+            }
         }
 
         public virtual Entity Entity

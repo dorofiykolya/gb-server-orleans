@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Events
 {
-    interface IEventDispatcher
+    public interface IEventDispatcher : IDispatcher, IEventListener
     {
     }
 }
