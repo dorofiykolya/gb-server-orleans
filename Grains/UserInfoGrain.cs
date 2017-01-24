@@ -7,12 +7,12 @@ using Orleans.Providers;
 namespace Grains
 {
     [StorageProvider(ProviderName = "UserProvider")]
-    public class UserInfoGrain : Grain<UserInfoGrain.UserState>, IUserInfoGrain
+    public class UserInfoGrain : Grain<UserInfoState>, IUserInfoGrain
     {
-        [Serializable]
-        public class UserState
+        public override Task OnActivateAsync()
         {
-            public string Name = "default name";
+            State.UserId = this.GetPrimaryKeyLong();
+            return base.OnActivateAsync();
         }
 
         public Task<string> GetName()

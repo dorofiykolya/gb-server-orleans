@@ -9,6 +9,9 @@
       <Provider Type="Orleans.StorageProviders.SimpleSQLServerStorage.SimpleSQLServerStorage" Name="UserProvider"
                 ConnectionString="Data Source=91.218.212.20;Initial Catalog=TheFunGame;Persist Security Info=True;User ID=sa;Password=&quot;d?yYev@,P=26P=RD&quot;"
                 UseJsonFormat="true" />
+      <!--<Provider Type="StorageProvider.UserSQLStorageProvider.UserSQLStorageProvider" Name="UserProvider"
+                ConnectionString="Data Source=91.218.212.20;Initial Catalog=TheFunGame;Persist Security Info=True;User ID=sa;Password=&quot;d?yYev@,P=26P=RD&quot;"
+                UseJsonFormat="true" />-->
       <!--<Provider Type="StorageProvider.JSONFileStorageProvider" Name="FileStore" Path="..\FileStorage" />-->
       <!--<Provider Type="Orleans.StorageProviders.RedisStorage" Name="RedisStore" UseJsonFormat="true" RedisConnectionString="localhost" />-->
     </StorageProviders>

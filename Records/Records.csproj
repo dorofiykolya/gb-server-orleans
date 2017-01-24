@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{75F34EF5-3FDF-412D-BD04-E4A5595A1583}</ProjectGuid>
+    <ProjectGuid>{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProxyPackets</RootNamespace>
-    <AssemblyName>ProxyPackets</AssemblyName>
+    <RootNamespace>Records</RootNamespace>
+    <AssemblyName>Records</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -45,20 +44,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\PacketIdAttribute.cs" />
-    <Compile Include="AuthByDeveloperPacket.cs" />
-    <Compile Include="ChangeUserNamePacket.cs" />
-    <Compile Include="GetInitializationPacket.cs" />
-    <Compile Include="GetLocalizationPacket.cs" />
-    <Compile Include="GetUserNamePacket.cs" />
-    <Compile Include="InitUserPacket.cs" />
-    <Compile Include="PacketConverter.cs" />
+    <Compile Include="Buildings\BuildingLevelRecord.cs" />
+    <Compile Include="Buildings\BuildingRecord.cs" />
+    <Compile Include="Buildings\BuildingType.cs" />
+    <Compile Include="Initialization\InitializationRecord.cs" />
+    <Compile Include="Locations\LocationBuildingRecord.cs" />
+    <Compile Include="Locations\LocationRecord.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserAuthPacket.cs" />
-    <Compile Include="UserMessagePacket.cs" />
+    <Compile Include="Units\UnitLevelRecord.cs" />
+    <Compile Include="Units\UnitRecord.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modes\" />
+    <Folder Include="Skills\" />
+    <Folder Include="Spells\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

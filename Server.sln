@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.25928.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{BD0764AB-7399-43FE-883C-B997496CB557}"
 EndProject
@@ -33,6 +33,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleEngine", "BattleEngine\BattleEngine.csproj", "{698BF3EE-35F1-48EF-B5DB-A47C20DA9C22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Records", "Records\Records.csproj", "{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +98,10 @@ Global
 		{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C71C3AB-CCD0-4DC1-9547-C04E16969A08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
