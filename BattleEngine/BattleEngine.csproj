@@ -40,7 +40,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\BattleAction.cs" />
+    <Compile Include="Engine\BattleActionEngine.cs" />
+    <Compile Include="Engine\BattleActionQueue.cs" />
+    <Compile Include="Engine\BattleActors.cs" />
+    <Compile Include="Engine\BattleCommandsProvider.cs" />
+    <Compile Include="Engine\BattleConfiguration.cs" />
+    <Compile Include="Engine\BattleContext.cs" />
+    <Compile Include="Engine\BattleEngine.cs" />
+    <Compile Include="Engine\BattleEngineCommand.cs" />
+    <Compile Include="Engine\BattleEngineProcessor.cs" />
+    <Compile Include="Engine\BattleModulesProcessor.cs" />
+    <Compile Include="Engine\BattleOutput.cs" />
+    <Compile Include="Engine\BattlePlayers.cs" />
+    <Compile Include="Engine\BattleState.cs" />
+    <Compile Include="Players\BattlePlayers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\BattleCommands.cs" />
+    <Compile Include="Utils\IntRandom.cs" />
+    <Compile Include="Utils\PriorityQueueComparable.cs" />
+    <Compile Include="Utils\Random.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
