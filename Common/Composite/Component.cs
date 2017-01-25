@@ -10,21 +10,26 @@ namespace Common.Composite
         [ThreadStatic]
         private static volatile Dictionary<Type, Stack<Component>> PoolStack;
 
-        public static T Instantiate<T>() where T : Component, new()
+        public static Component Instantiate(Type type)
         {
             if (PoolStack != null)
             {
                 Stack<Component> stack;
-                if (PoolStack.TryGetValue(typeof(T), out stack) && stack.Count != 0)
+                if (PoolStack.TryGetValue(type, out stack) && stack.Count != 0)
                 {
-                    var result = (T)stack.Pop();
+                    var result = stack.Pop();
                     result._disposed = false;
                     result.Reinitialize();
                     return result;
                 }
             }
 
-            return Activator.CreateInstance<T>();
+            return Activator.CreateInstance(type) as Component;
+        }
+
+        public static T Instantiate<T>() where T : Component, new()
+        {
+            return (T)Instantiate(typeof(T));
         }
 
         private static void DisposeComponent(Component component)
@@ -112,7 +117,7 @@ namespace Common.Composite
             }
         }
 
-        public Component AddComponent(Component component)
+        public virtual Component AddComponent(Component component)
         {
             if (_entity != null)
             {
@@ -121,7 +126,7 @@ namespace Common.Composite
             return null;
         }
 
-        public Component AddComponent(Type componentType)
+        public virtual Component AddComponent(Type componentType)
         {
             if (_entity != null)
             {
@@ -135,7 +140,7 @@ namespace Common.Composite
             return (T)AddComponent(typeof(T));
         }
 
-        public bool RemoveComponent(Component component)
+        public virtual bool RemoveComponent(Component component)
         {
             if (_entity != null)
             {
@@ -144,7 +149,7 @@ namespace Common.Composite
             return false;
         }
 
-        public bool RemoveComponents(Type componentType)
+        public virtual bool RemoveComponents(Type componentType)
         {
             if (_entity != null)
             {
@@ -158,7 +163,7 @@ namespace Common.Composite
             return RemoveComponents(typeof(T));
         }
 
-        public Component GetComponent(Type componentType)
+        public virtual Component GetComponent(Type componentType)
         {
             if (_entity != null)
             {
@@ -167,12 +172,30 @@ namespace Common.Composite
             return null;
         }
 
-        public T GetComponent<T>() where T : class
+        public virtual Component GetComponentByName(string name)
+        {
+            if (_entity != null)
+            {
+                return _entity.GetComponentByName(name);
+            }
+            return null;
+        }
+
+        public virtual T GetComponent<T>() where T : class
         {
             return GetComponent(typeof(T)) as T;
         }
 
-        public List<Component> GetComponentsInChildren(Type compoentType = null, bool recursive = true, bool includeInactive = false, List<Component> result = null)
+        public virtual List<Component> GetComponents(Type type = null, bool includeInactive = false, List<Component> result = null)
+        {
+            if (_entity != null)
+            {
+                return _entity.GetComponents(type, includeInactive, result);
+            }
+            return null;
+        }
+
+        public virtual List<Component> GetComponentsInChildren(Type compoentType = null, bool recursive = true, bool includeInactive = false, List<Component> result = null)
         {
             if (_entity != null)
             {
@@ -181,7 +204,7 @@ namespace Common.Composite
             return null;
         }
 
-        public List<T> GetComponentsInChildren<T>(bool recursive = true, bool includeInactive = false, List<Component> result = null)
+        public virtual List<T> GetComponentsInChildren<T>(bool recursive = true, bool includeInactive = false, List<Component> result = null)
         {
             if (_entity != null)
             {
