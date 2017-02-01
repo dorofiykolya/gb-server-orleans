@@ -40,13 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\BattleObject.cs" />
+    <Compile Include="Actors\BattleObjectFactory.cs" />
+    <Compile Include="Engine\ActorsGroup.cs" />
     <Compile Include="Engine\BattleAction.cs" />
     <Compile Include="Engine\BattleActionEngine.cs" />
     <Compile Include="Engine\BattleActionQueue.cs" />
     <Compile Include="Engine\BattleActors.cs" />
+    <Compile Include="Engine\BattleActorsGroup.cs" />
     <Compile Include="Engine\BattleCommandsProvider.cs" />
     <Compile Include="Engine\BattleConfiguration.cs" />
     <Compile Include="Engine\BattleContext.cs" />
+    <Compile Include="Engine\BattleDamages.cs" />
     <Compile Include="Engine\BattleEngine.cs" />
     <Compile Include="Engine\BattleEngineCommand.cs" />
     <Compile Include="Engine\BattleEngineProcessor.cs" />
@@ -60,12 +65,23 @@
     <Compile Include="Utils\IntRandom.cs" />
     <Compile Include="Utils\PriorityQueueComparable.cs" />
     <Compile Include="Utils\Random.cs" />
+    <Compile Include="Utils\Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actions\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Components\" />
+    <Folder Include="Modifiers\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Output\" />
+    <Folder Include="Records\" />
+    <Folder Include="Spells\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

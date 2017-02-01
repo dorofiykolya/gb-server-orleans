@@ -3,79 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BattleEngine.Actors;
 using BattleEngine.Utils;
+using Common.Composite;
 
 namespace BattleEngine.Engine
 {
     public class BattleActors
     {
         private Vector<BattleObject> _temp = new Vector<BattleObject>();
-		private _tempActors:Vector.<BattleActorsGroup> = new Vector.<BattleActorsGroup>();
-		private _tempComponents:Vector.<Component> = new Vector.<Component>();
-		
-		private _battleEngine:BattleEngine;
-		private _groupMap:Dictionary;
-		private _factory:BattleObjectFactory;
-		private _list:Vector.<BattleActorsGroup>;
-		private _map:Vector.<BattleObject>;
-		private _damages:BattleDamages;
-		
-		public function BattleActors(battleEngine:BattleEngine)
+        private Vector<BattleActorsGroup> _tempActors = new Vector<BattleActorsGroup>();
+        private Vector<Component> _tempComponents = new Vector<Component>();
+
+        private BattleEngine _battleEngine;
+        private Dictionary _groupMap;
+        private BattleObjectFactory _factory;
+        private Vector<BattleActorsGroup> _list;
+        private Vector<BattleObject> _map;
+        private BattleDamages _damages;
+
+        public BattleActors(BattleEngine battleEngine)
         {
             _battleEngine = battleEngine;
             _groupMap = new Dictionary();
-            _map = new < BattleObject >[null];
+            _map = new Vector<BattleObject>();
             _factory = new BattleObjectFactory(_map, _battleEngine);
-            _list = new Vector.< BattleActorsGroup > ();
+            _list = new Vector<BattleActorsGroup>();
             _damages = new BattleDamages(_battleEngine.context);
 
-            for each(var enum: ActorsGroup in Enum.getEnums(ActorsGroup))
-			{
+            foreach (var e in Enum.GetValues(typeof(ActorsGroup)))
+            {
+                group((ActorsGroup)e);
+            }
+        }
 
-                group(enum);
-			}
-}
+        public BattleDamages damagesFactory
+        {
+            get { return _damages; }
+        }
 
-public function get damagesFactory():BattleDamages
-		{
-			return _damages;
-		}
-		
-		public function get factory():BattleObjectFactory
-		{
-			return _factory;
-		}
-		
-		public function getGroups(result:Vector.<BattleActorsGroup> = null):Vector.<BattleActorsGroup>
-		{
-			if (result == null) result = new Vector.<BattleActorsGroup>();
-			for each(var item:BattleActorsGroup in _battleEngine.getComponents(BattleActorsGroup, false, _tempComponents))
-			{
-				result.push(item);
-			}
-			return result;
-		}
-		
-		public function getActors(result:Vector.<BattleObject> = null):Vector.<BattleObject>
-		{
-			for each(var item:BattleActorsGroup in _list)
-{
-    item.getActors(null, result);
-}
-			return result;
-		}
-		
-		public function getActorByObjectId(objectId:int):BattleObject
+        public BattleObjectFactory factory
+        {
+            get { return _factory; }
+        }
+
+        public Vector<BattleActorsGroup> getGroups(Vector<BattleActorsGroup> result = null)
+        {
+            if (result == null) result = new Vector<BattleActorsGroup>();
+            foreach (var item in _battleEngine.GetComponents(typeof(BattleActorsGroup), false, _tempComponents))
+            {
+                result.push((BattleActorsGroup)item);
+            }
+            return result;
+        }
+
+        public Vector<BattleObject> getActors(Vector<BattleObject> result = null)
+        {
+            foreach (var item in _list)
+            {
+                item.getActors(null, result);
+            }
+            return result;
+        }
+
+        public BattleObject getActorByObjectId(int objectId)
 		{
 			return _map[objectId];
 		}
-		
-		public function group(enum: ActorsGroup):BattleActorsGroup
+
+    public BattleActorsGroup group(ActorsGroup e)
 		{
-			var result:BattleActorsGroup = _groupMap[enum];
+			var result:BattleActorsGroup = _groupMap[e];
 			if (result == null)
 			{
-				_groupMap[enum] = result = new BattleActorsGroup(enum, _battleEngine);
+				_groupMap[enum] = result = new BattleActorsGroup(e, _battleEngine);
 				_list.push(result);
 				_battleEngine.addComponent(result);
 			}

@@ -19,6 +19,17 @@ namespace BattleEngine.Utils
         public int length
         {
             get { return Count; }
+            set
+            {
+                if (value < Count)
+                {
+                    RemoveRange(value, Count - value);
+                }
+                while (value > Count)
+                {
+                    Add(default(T));
+                }
+            }
         }
     }
 }
