@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BattleEngine.Actors;
 using BattleEngine.Utils;
 using Common.Composite;
@@ -16,7 +13,7 @@ namespace BattleEngine.Engine
         private Vector<Component> _tempComponents = new Vector<Component>();
 
         private BattleEngine _battleEngine;
-        private Dictionary _groupMap;
+        private Dictionary<ActorsGroup, BattleActorsGroup> _groupMap;
         private BattleObjectFactory _factory;
         private Vector<BattleActorsGroup> _list;
         private Vector<BattleObject> _map;
@@ -25,7 +22,7 @@ namespace BattleEngine.Engine
         public BattleActors(BattleEngine battleEngine)
         {
             _battleEngine = battleEngine;
-            _groupMap = new Dictionary();
+            _groupMap = new Dictionary<ActorsGroup, BattleActorsGroup>();
             _map = new Vector<BattleObject>();
             _factory = new BattleObjectFactory(_map, _battleEngine);
             _list = new Vector<BattleActorsGroup>();
@@ -67,40 +64,40 @@ namespace BattleEngine.Engine
         }
 
         public BattleObject getActorByObjectId(int objectId)
-		{
-			return _map[objectId];
-		}
+        {
+            return _map[objectId];
+        }
 
-    public BattleActorsGroup group(ActorsGroup e)
-		{
-			var result:BattleActorsGroup = _groupMap[e];
-			if (result == null)
-			{
-				_groupMap[enum] = result = new BattleActorsGroup(e, _battleEngine);
-				_list.push(result);
-				_battleEngine.addComponent(result);
-			}
-			return result;
-		}
-		
-		public function get buildings():BattleActorsGroup
-		{
-			return group(ActorsGroup.BUILDING);
-		}
-		
-		public function get units():BattleActorsGroup
-		{
-			return group(ActorsGroup.UNIT);
-		}
-		
-		public function get bullets():BattleActorsGroup
-		{
-			return group(ActorsGroup.BULLET);
-		}
-		
-		public function get damages():BattleActorsGroup
-		{
-			return group(ActorsGroup.DAMAGE);
-		}
+        public BattleActorsGroup group(ActorsGroup e)
+        {
+            BattleActorsGroup result;
+            if (!_groupMap.TryGetValue(e, out result))
+            {
+                _groupMap[e] = result = new BattleActorsGroup(e, _battleEngine);
+                _list.push(result);
+                _battleEngine.AddComponent(result);
+            }
+            return result;
+        }
+
+        public BattleActorsGroup buildings
+        {
+            get { return group(ActorsGroup.BUILDING); }
+        }
+
+        public BattleActorsGroup units
+        {
+            get { return group(ActorsGroup.UNIT); }
+        }
+
+        public BattleActorsGroup bullets
+        {
+            get { return group(ActorsGroup.BULLET); }
+        }
+
+        public BattleActorsGroup damages
+        {
+            get { return group(ActorsGroup.DAMAGE); }
+        }
     }
 }

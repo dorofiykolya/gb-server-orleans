@@ -9,5 +9,9 @@ namespace BattleEngine.Actors
 {
     public class BattleObject : Entity
     {
+        public void setObjectId(int objectId)
+        {
+            
+        }
     }
 }

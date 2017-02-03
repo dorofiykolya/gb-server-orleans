@@ -42,6 +42,16 @@
   <ItemGroup>
     <Compile Include="Actors\BattleObject.cs" />
     <Compile Include="Actors\BattleObjectFactory.cs" />
+    <Compile Include="Actors\Buildings\BattleBuilding.cs" />
+    <Compile Include="Actors\Bullets\BattleBullet.cs" />
+    <Compile Include="Actors\Damages\BattleDamage.cs" />
+    <Compile Include="Actors\Factories\BulletFactory.cs" />
+    <Compile Include="Actors\Factories\BuildingFactory.cs" />
+    <Compile Include="Actors\Factories\DamageFactory.cs" />
+    <Compile Include="Actors\Factories\SpellFactory.cs" />
+    <Compile Include="Actors\Factories\UnitFactory.cs" />
+    <Compile Include="Actors\Spells\BattleSpell.cs" />
+    <Compile Include="Actors\Units\BattleUnit.cs" />
     <Compile Include="Engine\ActorsGroup.cs" />
     <Compile Include="Engine\BattleAction.cs" />
     <Compile Include="Engine\BattleActionEngine.cs" />
@@ -55,13 +65,31 @@
     <Compile Include="Engine\BattleEngine.cs" />
     <Compile Include="Engine\BattleEngineCommand.cs" />
     <Compile Include="Engine\BattleEngineProcessor.cs" />
+    <Compile Include="Engine\BattleModule.cs" />
     <Compile Include="Engine\BattleModulesProcessor.cs" />
+    <Compile Include="Engine\BattleModulesProvider.cs" />
     <Compile Include="Engine\BattleOutput.cs" />
+    <Compile Include="Engine\BattleOutputEventFactory.cs" />
     <Compile Include="Engine\BattlePlayers.cs" />
     <Compile Include="Engine\BattleState.cs" />
+    <Compile Include="Modifiers\BattleModifier.cs" />
+    <Compile Include="Modifiers\ModifierType.cs" />
+    <Compile Include="Output\OutputEvent.cs" />
+    <Compile Include="Players\BattleNPCPlayer.cs" />
+    <Compile Include="Players\BattlePlayer.cs" />
     <Compile Include="Players\BattlePlayers.cs" />
+    <Compile Include="Players\PlayerManna.cs" />
+    <Compile Include="Players\PlayerModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BattleCommands.cs" />
+    <Compile Include="Records\BattleBuildingRecord.cs" />
+    <Compile Include="Records\BattleModifierRecord.cs" />
+    <Compile Include="Records\BattleNPCRecord.cs" />
+    <Compile Include="Records\BattleOwnerRecord.cs" />
+    <Compile Include="Records\BattleSkillRecord.cs" />
+    <Compile Include="Records\BattleUnitRecord.cs" />
+    <Compile Include="Records\Race.cs" />
+    <Compile Include="Utils\Factory.cs" />
     <Compile Include="Utils\IntRandom.cs" />
     <Compile Include="Utils\PriorityQueueComparable.cs" />
     <Compile Include="Utils\Random.cs" />
@@ -72,15 +100,16 @@
       <Project>{FB5CDC26-6555-4DAC-82E6-FF5249F3E059}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Records\Records.csproj">
+      <Project>{0c71c3ab-ccd0-4dc1-9547-c04e16969a08}</Project>
+      <Name>Records</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Actions\" />
     <Folder Include="Commands\" />
     <Folder Include="Components\" />
-    <Folder Include="Modifiers\" />
     <Folder Include="Modules\" />
-    <Folder Include="Output\" />
-    <Folder Include="Records\" />
     <Folder Include="Spells\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

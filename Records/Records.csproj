@@ -46,19 +46,21 @@
   <ItemGroup>
     <Compile Include="Buildings\BuildingLevelRecord.cs" />
     <Compile Include="Buildings\BuildingRecord.cs" />
+    <Compile Include="Buildings\BuildingsRecordMap.cs" />
     <Compile Include="Buildings\BuildingType.cs" />
     <Compile Include="Initialization\InitializationRecord.cs" />
     <Compile Include="Locations\LocationBuildingRecord.cs" />
     <Compile Include="Locations\LocationRecord.cs" />
+    <Compile Include="Modes\ModeRecordMap.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spells\SpellRecordMap.cs" />
     <Compile Include="Units\UnitLevelRecord.cs" />
     <Compile Include="Units\UnitRecord.cs" />
+    <Compile Include="Units\UnitRecordMap.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modes\" />
     <Folder Include="Skills\" />
-    <Folder Include="Spells\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
