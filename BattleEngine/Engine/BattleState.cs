@@ -39,9 +39,9 @@ namespace BattleEngine.Engine
             _isFinished = true;
         }
 
-        public int tick()
+        public int tick
         {
-            return _tick;
+            get { return _tick; }
         }
 
         public bool isFinished

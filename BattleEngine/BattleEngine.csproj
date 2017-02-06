@@ -40,18 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\BattleStartAction.cs" />
+    <Compile Include="Actions\BattleUnitAttackAction.cs" />
     <Compile Include="Actors\BattleObject.cs" />
     <Compile Include="Actors\BattleObjectFactory.cs" />
+    <Compile Include="Actors\BattleUnitOwner.cs" />
     <Compile Include="Actors\Buildings\BattleBuilding.cs" />
     <Compile Include="Actors\Bullets\BattleBullet.cs" />
     <Compile Include="Actors\Damages\BattleDamage.cs" />
+    <Compile Include="Actors\DamageType.cs" />
+    <Compile Include="Actors\DefenseType.cs" />
     <Compile Include="Actors\Factories\BulletFactory.cs" />
     <Compile Include="Actors\Factories\BuildingFactory.cs" />
     <Compile Include="Actors\Factories\DamageFactory.cs" />
     <Compile Include="Actors\Factories\SpellFactory.cs" />
     <Compile Include="Actors\Factories\UnitFactory.cs" />
     <Compile Include="Actors\Spells\BattleSpell.cs" />
+    <Compile Include="Actors\UnitsContainer.cs" />
     <Compile Include="Actors\Units\BattleUnit.cs" />
+    <Compile Include="Commands\BattleStartCommand.cs" />
+    <Compile Include="Commands\BattleUnitAttackCommand.cs" />
     <Compile Include="Engine\ActorsGroup.cs" />
     <Compile Include="Engine\BattleAction.cs" />
     <Compile Include="Engine\BattleActionEngine.cs" />
@@ -72,9 +80,20 @@
     <Compile Include="Engine\BattleOutputEventFactory.cs" />
     <Compile Include="Engine\BattlePlayers.cs" />
     <Compile Include="Engine\BattleState.cs" />
+    <Compile Include="Engine\BattleTransform.cs" />
     <Compile Include="Modifiers\BattleModifier.cs" />
     <Compile Include="Modifiers\ModifierType.cs" />
+    <Compile Include="Modules\BattleBuildingAttackModule.cs" />
+    <Compile Include="Modules\BattleBulletModule.cs" />
+    <Compile Include="Modules\BattleDamangeModule.cs" />
+    <Compile Include="Modules\BattleMannaModule.cs" />
+    <Compile Include="Modules\BattleUnitDieModule.cs" />
+    <Compile Include="Modules\BattleUnitsMoveModule.cs" />
+    <Compile Include="Modules\BattleUnitsRegenModule.cs" />
+    <Compile Include="Modules\BattleUpdateObjectModule.cs" />
+    <Compile Include="Output\FinishEvent.cs" />
     <Compile Include="Output\OutputEvent.cs" />
+    <Compile Include="Output\UnitsChangeEvent.cs" />
     <Compile Include="Players\BattleNPCPlayer.cs" />
     <Compile Include="Players\BattlePlayer.cs" />
     <Compile Include="Players\BattlePlayers.cs" />
@@ -82,6 +101,7 @@
     <Compile Include="Players\PlayerModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BattleCommands.cs" />
+    <Compile Include="Providers\BattleModules.cs" />
     <Compile Include="Records\BattleBuildingRecord.cs" />
     <Compile Include="Records\BattleModifierRecord.cs" />
     <Compile Include="Records\BattleNPCRecord.cs" />
@@ -91,6 +111,9 @@
     <Compile Include="Records\Race.cs" />
     <Compile Include="Utils\Factory.cs" />
     <Compile Include="Utils\IntRandom.cs" />
+    <Compile Include="Utils\Math2.cs" />
+    <Compile Include="Utils\Point.cs" />
+    <Compile Include="Utils\Point3.cs" />
     <Compile Include="Utils\PriorityQueueComparable.cs" />
     <Compile Include="Utils\Random.cs" />
     <Compile Include="Utils\Vector.cs" />
@@ -106,10 +129,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Actions\" />
-    <Folder Include="Commands\" />
     <Folder Include="Components\" />
-    <Folder Include="Modules\" />
     <Folder Include="Spells\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

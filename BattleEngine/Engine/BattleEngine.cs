@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BattleEngine.Actions;
+using BattleEngine.Output;
 using BattleEngine.Providers;
 using Common.Composite;
 
@@ -121,7 +118,7 @@ namespace BattleEngine.Engine
                 _state.updateTick(tick);
                 if (finish)
                 {
-                    output.enqueueByFactory(FinishEvent, tick);
+                    output.enqueueByFactory<FinishEvent>(tick);
                     _state.finishBattle();
                 }
             }

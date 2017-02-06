@@ -1,6 +1,6 @@
 ﻿namespace Records
 {
-    public class Point
+    public class PointRecord
     {
         public int x;
         public int y;

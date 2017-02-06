@@ -52,7 +52,7 @@
     <Compile Include="Locations\LocationBuildingRecord.cs" />
     <Compile Include="Locations\LocationRecord.cs" />
     <Compile Include="Modes\ModeRecordMap.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="PointRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spells\SpellRecordMap.cs" />
     <Compile Include="Units\UnitLevelRecord.cs" />

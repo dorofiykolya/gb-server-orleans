@@ -14,6 +14,6 @@ namespace Records.Locations
         public int Level;
 
         [JsonProperty("coords")]
-        public Point Coords;
+        public PointRecord Coords;
     }
 }
