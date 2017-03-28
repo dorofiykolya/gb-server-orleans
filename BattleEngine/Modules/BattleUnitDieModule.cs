@@ -1,6 +1,7 @@
 ﻿using BattleEngine.Actors;
 using BattleEngine.Actors.Units;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
 
 namespace BattleEngine.Modules
@@ -19,7 +20,7 @@ namespace BattleEngine.Modules
             _temp.length = 0;
             context.actors.units.getActors(typeof(BattleUnit), _temp);
 
-            foreach (var unit in _temp)
+            foreach (BattleUnit unit in _temp)
             {
                 if (unit.isDied)
                 {

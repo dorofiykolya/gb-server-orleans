@@ -5,7 +5,6 @@ namespace BattleEngine.Actors
 {
     public class BattleObject : Entity
     {
-        private Engine.BattleEngine _engine;
         private BattleTransform _transform;
         private int _objectId;
         private int _ownerId;

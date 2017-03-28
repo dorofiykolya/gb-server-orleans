@@ -1,5 +1,7 @@
-﻿using BattleEngine.Engine;
+﻿using BattleEngine.Components.Buildings;
+using BattleEngine.Engine;
 using BattleEngine.Modifiers;
+using BattleEngine.Output;
 using BattleEngine.Records;
 using Records.Buildings;
 
@@ -27,7 +29,7 @@ namespace BattleEngine.Actors.Buildings
 
         public BuildingLevelRecord infoLevel
         {
-            get { return _record.levels[_battleRecord.level]; }
+            get { return _record.Levels[_battleRecord.level]; }
         }
 
         public int level
@@ -46,16 +48,16 @@ namespace BattleEngine.Actors.Buildings
 
         public int unitId
         {
-            get { return infoLevel.unitId; }
+            get { return infoLevel.UnitId; }
         }
 
         public double oneUnitDefense
         {
             get
             {
-                var unitRecord = engine.configuration.unitRecords.getBy(unitId, info.race).levels[level];
+                var unitRecord = engine.configuration.unitRecords.GetBy(unitId, info.Race).Levels[level];
                 var unitDefense = engine.players.getPlayer(ownerId)
-                .modifier.calculate(ModifierType.UNITS_DEFENSE, unitRecord.defense, unitId);
+                .modifier.calculate(ModifierType.UNITS_DEFENSE, unitRecord.Defense, unitId);
                 return unitDefense;
             }
         }
@@ -64,9 +66,9 @@ namespace BattleEngine.Actors.Buildings
         {
             get
             {
-                var unitRecord = engine.configuration.unitRecords.getBy(unitId, info.race).levels[level];
+                var unitRecord = engine.configuration.unitRecords.GetBy(unitId, info.Race).Levels[level];
                 var unitDefense = engine.players.getPlayer(ownerId)
-                    .modifier.calculate(ModifierType.UNITS_MAGIC_DEFENSE, unitRecord.magicDefense, unitId);
+                    .modifier.calculate(ModifierType.UNITS_MAGIC_DEFENSE, unitRecord.MagicDefense, unitId);
                 return unitDefense;
             }
         }
@@ -75,9 +77,9 @@ namespace BattleEngine.Actors.Buildings
         {
             get
             {
-                var unitRecord = engine.configuration.unitRecords.getBy(unitId, info.race).levels[level];
+                var unitRecord = engine.configuration.unitRecords.GetBy(unitId, info.Race).Levels[level];
                 var unitHp = engine.players.getPlayer(ownerId)
-                    .modifier.calculate(ModifierType.UNITS_HP, unitRecord.hp, unitId);
+                    .modifier.calculate(ModifierType.UNITS_HP, unitRecord.Hp, unitId);
                 return unitHp;
             }
         }
@@ -86,9 +88,9 @@ namespace BattleEngine.Actors.Buildings
         {
             get
             {
-                var unitRecord = engine.configuration.unitRecords.getBy(unitId, info.race).levels[level];
+                var unitRecord = engine.configuration.unitRecords.GetBy(unitId, info.Race).Levels[level];
                 var damage = engine.players.getPlayer(ownerId)
-                    .modifier.calculate(ModifierType.UNITS_DAMAGE, unitRecord.damage, unitId);
+                    .modifier.calculate(ModifierType.UNITS_DAMAGE, unitRecord.Damage, unitId);
                 return damage;
             }
         }
@@ -110,7 +112,7 @@ namespace BattleEngine.Actors.Buildings
 
         public void initialize(BattleBuildingRecord info, BattleConfiguration configuration)
         {
-            _record = configuration.buildingRecords.getByBuildingId(info.id, info.race);
+            _record = configuration.buildingRecords.GetByBuildingId(info.id, info.race);
             _battleRecord = info;
 
             setOwnerId(info.ownerId);
@@ -118,71 +120,70 @@ namespace BattleEngine.Actors.Buildings
 
             units.setCount(_battleRecord.units);
 
-            var unitsPerSecond = infoLevel.unitsProduction;
+            var unitsPerSecond = infoLevel.UnitsProduction;
 
             AddComponent<UnitRegenComponent>().setUnitsPerTick((unitsPerSecond / engine.configuration.ticksPerSecond));
 
-            switch (_record.type)
+            switch (_record.Type)
             {
                 case BuildingType.DEFENSE:
 
-                    AddComponent(BuildingAttackDefenseComponent);
+                    AddComponent<BuildingAttackDefenseComponent>();
                     break;
                 case BuildingType.MANNA:
 
-                    AddComponent(MannaRegenComponent);
+                    AddComponent<MannaRegenComponent>();
                     break;
                 case BuildingType.PRODUCTION:
                     break;
             }
         }
 
-        public function changeOwner(ownerId:int):void
-		{
-
+        public void changeOwner(int ownerId)
+        {
             setOwnerId(ownerId);
-    }
+        }
 
-    public function receiveDamage(damage:Number):void
-		{
-			var unitDefense:Number = oneUnitDefense;
-			var unitHP:Number = oneUnitHp;
-			
-			while (damage > 0 && units.count > 0)
-			{
-				var currentHp:Number = unitHP;
-				damage -= unitDefense;
-				currentHp -= damage;
-				damage -= unitHP;
-				if (currentHp <= 0)
-				{
-					units.remove(1);
-				}
-			}
-		}
-		
-		public function get unitsPerSecond():Number
-		{
-			return infoLevel.unitsProduction;
-		}
-		
-		public function get mannaPerSecond():Number
-		{
-			return infoLevel.mannaProduction;
-		}
-		
-		public function get powerDamage():Number
-		{
-			return units.count* oneUnitDamage;
-		}
-		
-		private function outputEvent():void
-		{
-			var evt:BuildingChangeUnitEvent = engine.output.enqueueByFactory(BuildingChangeUnitEvent) as BuildingChangeUnitEvent;
-			evt.tick = engine.tick;
-			evt.objectId = objectId;
-			evt.units = units.count;
-		}
-	
-	}
+        public void receiveDamage(double damage)
+        {
+            var unitDefense = oneUnitDefense;
+            var unitHP = oneUnitHp;
+
+            while (damage > 0 && units.count > 0)
+            {
+                var currentHp = unitHP;
+                damage -= unitDefense;
+                currentHp -= damage;
+                damage -= unitHP;
+                if (currentHp <= 0)
+                {
+                    units.remove(1);
+                }
+            }
+        }
+
+        public double unitsPerSecond
+        {
+            get { return infoLevel.UnitsProduction; }
+        }
+
+        public double mannaPerSecond
+        {
+            get { return infoLevel.MannaProduction; }
+        }
+
+        public double powerDamage
+        {
+            get { return units.count * oneUnitDamage; }
+        }
+
+        private void outputEvent()
+        {
+            var evt = engine.output.enqueueByFactory<BuildingChangeUnitEvent>();
+            evt.tick = engine.tick;
+            evt.objectId = objectId;
+            evt.units = units.count;
+        }
+
+    }
 }

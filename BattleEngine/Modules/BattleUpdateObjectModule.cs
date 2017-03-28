@@ -25,12 +25,12 @@ namespace BattleEngine.Modules
             {
                 context.actors.group(e).GetComponentsInChildren(typeof(BattleComponent), true, true, _temp);
 
-                foreach (var item in _temp)
+                foreach (BattleComponent item in _temp)
                 {
                     item.update(tick, deltaTick);
                     if (item.needRemove)
                     {
-                        item.dispose();
+                        item.Dispose();
                     }
                 }
             }

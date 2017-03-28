@@ -47,7 +47,12 @@
     <Compile Include="Actors\BattleUnitOwner.cs" />
     <Compile Include="Actors\Buildings\BattleBuilding.cs" />
     <Compile Include="Actors\Bullets\BattleBullet.cs" />
+    <Compile Include="Actors\Bullets\BattleBulletBuilding.cs" />
+    <Compile Include="Actors\Bullets\BulletMoveComponent.cs" />
+    <Compile Include="Actors\Damages\ApplyDamageResult.cs" />
     <Compile Include="Actors\Damages\BattleDamage.cs" />
+    <Compile Include="Actors\Damages\BattleDamageBuildingBullet.cs" />
+    <Compile Include="Actors\Damages\BattleDamageUnitToBuilding.cs" />
     <Compile Include="Actors\DamageType.cs" />
     <Compile Include="Actors\DefenseType.cs" />
     <Compile Include="Actors\Factories\BulletFactory.cs" />
@@ -60,6 +65,13 @@
     <Compile Include="Actors\Units\BattleUnit.cs" />
     <Compile Include="Commands\BattleStartCommand.cs" />
     <Compile Include="Commands\BattleUnitAttackCommand.cs" />
+    <Compile Include="Components\Buildings\BuildingAttackDefenseComponent.cs" />
+    <Compile Include="Components\Buildings\IMannaModifier.cs" />
+    <Compile Include="Components\Buildings\MannaRegenComponent.cs" />
+    <Compile Include="Components\Buildings\UnitRegenComponent.cs" />
+    <Compile Include="Components\Units\IMoveModifier.cs" />
+    <Compile Include="Components\Units\UnitDefenseComponent.cs" />
+    <Compile Include="Components\Units\UnitMoveComponent.cs" />
     <Compile Include="Engine\ActorsGroup.cs" />
     <Compile Include="Engine\BattleAction.cs" />
     <Compile Include="Engine\BattleActionEngine.cs" />
@@ -67,6 +79,7 @@
     <Compile Include="Engine\BattleActors.cs" />
     <Compile Include="Engine\BattleActorsGroup.cs" />
     <Compile Include="Engine\BattleCommandsProvider.cs" />
+    <Compile Include="Engine\BattleComponent.cs" />
     <Compile Include="Engine\BattleConfiguration.cs" />
     <Compile Include="Engine\BattleContext.cs" />
     <Compile Include="Engine\BattleDamages.cs" />
@@ -81,6 +94,7 @@
     <Compile Include="Engine\BattlePlayers.cs" />
     <Compile Include="Engine\BattleState.cs" />
     <Compile Include="Engine\BattleTransform.cs" />
+    <Compile Include="Engine\BattleUtils.cs" />
     <Compile Include="Modifiers\BattleModifier.cs" />
     <Compile Include="Modifiers\ModifierType.cs" />
     <Compile Include="Modules\BattleBuildingAttackModule.cs" />
@@ -91,8 +105,23 @@
     <Compile Include="Modules\BattleUnitsMoveModule.cs" />
     <Compile Include="Modules\BattleUnitsRegenModule.cs" />
     <Compile Include="Modules\BattleUpdateObjectModule.cs" />
+    <Compile Include="Output\BuildingAttackEvent.cs" />
+    <Compile Include="Output\BuildingChangeOwnerEvent.cs" />
+    <Compile Include="Output\BuildingChangeUnitEvent.cs" />
+    <Compile Include="Output\BuildingCreateEvent.cs" />
+    <Compile Include="Output\BulletCreateEvent.cs" />
+    <Compile Include="Output\BulletMoveEvent.cs" />
+    <Compile Include="Output\BulletRemoveEvent.cs" />
+    <Compile Include="Output\DamageApplyEvent.cs" />
     <Compile Include="Output\FinishEvent.cs" />
+    <Compile Include="Output\MannaChangeEvent.cs" />
     <Compile Include="Output\OutputEvent.cs" />
+    <Compile Include="Output\UnitAttachedEvent.cs" />
+    <Compile Include="Output\UnitAttackEvent.cs" />
+    <Compile Include="Output\UnitCreateEvent.cs" />
+    <Compile Include="Output\UnitDieEvent.cs" />
+    <Compile Include="Output\UnitMoveEvent.cs" />
+    <Compile Include="Output\UnitRemoveEvent.cs" />
     <Compile Include="Output\UnitsChangeEvent.cs" />
     <Compile Include="Players\BattleNPCPlayer.cs" />
     <Compile Include="Players\BattlePlayer.cs" />
@@ -129,7 +158,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="Spells\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

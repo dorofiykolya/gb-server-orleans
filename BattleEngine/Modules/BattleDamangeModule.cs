@@ -1,12 +1,13 @@
 ﻿using BattleEngine.Actors.Damages;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
+using Common.Composite;
 
 namespace BattleEngine.Modules
 {
     public class BattleDamangeModule : BattleModule
     {
-
         private Vector<Component> _temp = new Vector<Component>();
         private Vector<ApplyDamageResult> _damages = new Vector<ApplyDamageResult>();
 
@@ -21,7 +22,7 @@ namespace BattleEngine.Modules
             var actors = context.actors.damages;
             actors.GetComponents(typeof(BattleDamage), false, _temp);
 
-            foreach (var damage in _temp)
+            foreach (BattleDamage damage in _temp)
             {
                 damage.update(tick, deltaTick);
                 if (damage.needApplyDamage)
@@ -47,7 +48,7 @@ namespace BattleEngine.Modules
                 }
                 if (damage.needRemove)
                 {
-                    damage.dispose();
+                    damage.Dispose();
                 }
             }
         }

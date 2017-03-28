@@ -1,6 +1,7 @@
 ﻿using BattleEngine.Actors;
 using BattleEngine.Actors.Bullets;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
 
 namespace BattleEngine.Modules
@@ -21,7 +22,7 @@ namespace BattleEngine.Modules
             _temp.length = 0;
             context.actors.bullets.getActors(typeof(BattleBullet), _temp);
 
-            foreach (var bullet in _temp)
+            foreach (BattleBullet bullet in _temp)
             {
                 bullet.update(tick, deltaTick);
 

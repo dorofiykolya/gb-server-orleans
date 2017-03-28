@@ -36,7 +36,7 @@ namespace BattleEngine.Engine
         {
             if (result == null) result = new Vector<BattleObject>();
             _temp.length = 0;
-            foreach (var item in GetComponents(type, false, _temp))
+            foreach (BattleObject item in GetComponents(type, false, _temp))
             {
                 if (type == null || item.GetType().IsAssignableFrom(type))
                 {

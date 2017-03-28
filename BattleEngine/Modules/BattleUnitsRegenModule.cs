@@ -1,6 +1,8 @@
 ﻿using BattleEngine.Actors;
 using BattleEngine.Actors.Buildings;
+using BattleEngine.Components.Buildings;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
 
 namespace BattleEngine.Modules
@@ -19,7 +21,7 @@ namespace BattleEngine.Modules
         {
             _temp.length = 0;
             context.actors.buildings.getActors(typeof(BattleBuilding), _temp);
-            foreach (var item in _temp)
+            foreach (BattleBuilding item in _temp)
             {
                 var regenComponent = item.GetComponent<UnitRegenComponent>();
                 if (regenComponent != null)

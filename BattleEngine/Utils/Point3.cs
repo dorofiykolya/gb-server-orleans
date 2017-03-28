@@ -4,7 +4,7 @@
     {
         public double z;
 
-        public new void offset(double x, double y, double z)
+        public void offset(double x, double y, double z)
         {
             this.x += x;
             this.y += y;

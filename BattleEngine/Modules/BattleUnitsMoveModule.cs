@@ -1,13 +1,15 @@
 ﻿using BattleEngine.Actors;
+using BattleEngine.Actors.Damages;
 using BattleEngine.Actors.Units;
+using BattleEngine.Components.Units;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
 
 namespace BattleEngine.Modules
 {
     public class BattleUnitsMoveModule : BattleModule
     {
-
         private Vector<BattleObject> _temp = new Vector<BattleObject>();
 
         public BattleUnitsMoveModule()
@@ -19,7 +21,7 @@ namespace BattleEngine.Modules
         {
             _temp.length = 0;
             context.actors.units.getActors(typeof(BattleUnit), _temp);
-            foreach (var unit in _temp)
+            foreach (BattleUnit unit in _temp)
             {
                 var move = unit.GetComponent<UnitMoveComponent>();
                 if (move != null)
@@ -42,6 +44,5 @@ namespace BattleEngine.Modules
                 }
             }
         }
-
     }
 }

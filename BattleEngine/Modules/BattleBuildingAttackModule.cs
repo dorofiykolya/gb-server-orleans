@@ -1,7 +1,9 @@
 ﻿using BattleEngine.Actors;
 using BattleEngine.Actors.Buildings;
 using BattleEngine.Actors.Units;
+using BattleEngine.Components.Buildings;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 using BattleEngine.Utils;
 
 namespace BattleEngine.Modules
@@ -28,12 +30,12 @@ namespace BattleEngine.Modules
             foreach (var building in _buildings)
             {
                 var component = building.GetComponent<BuildingAttackDefenseComponent>();
-                if (component && component.canAttack)
+                if (component != null && component.canAttack)
                 {
                     var range = component.range;
                     BattleUnit target = null;
-                    var minDistance = int.MaxValue;
-                    foreach (var unit in _units)
+                    double minDistance = int.MaxValue;
+                    foreach (BattleUnit unit in _units)
                     {
                         if (unit.ownerId != building.ownerId)
                         {

@@ -7,9 +7,6 @@ namespace Records.Units
         [JsonProperty("id")]
         public int Id;
 
-        [JsonProperty("unitId")]
-        public int UnitId;
-
         [JsonProperty("name")]
         public string Name;
 

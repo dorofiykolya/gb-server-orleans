@@ -17,5 +17,11 @@ namespace BattleEngine.Actors.Factories
             var result = _factory.instantiate(type) as BattleUnit;
             return result;
         }
+
+        public T instantiate<T>() where T : BattleUnitOwner
+        {
+            var result = _factory.instantiate(typeof(T)) as T;
+            return result;
+        }
     }
 }

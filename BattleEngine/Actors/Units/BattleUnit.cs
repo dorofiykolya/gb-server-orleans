@@ -2,6 +2,7 @@
 using BattleEngine.Actors.Buildings;
 using BattleEngine.Modifiers;
 using Records.Units;
+using BattleEngine.Components.Units;
 
 namespace BattleEngine.Actors.Units
 {
@@ -36,12 +37,12 @@ namespace BattleEngine.Actors.Units
 
             setOwnerId(from.ownerId);
             _level = from.level;
-            _info = engine.configuration.unitRecords.getBy(from.info.levels[from.level].unitId, from.info.race);
-            _infoLevel = _info.levels[_level];
+            _info = engine.configuration.unitRecords.GetBy(from.info.Levels[from.level].UnitId, from.info.Race);
+            _infoLevel = _info.Levels[_level];
             _move.moveTo(to.transform);
             transform.setFrom(from.transform);
 
-            _unitHP = engine.players.getPlayer(from.ownerId).modifier.calculate(ModifierType.UNITS_HP, _infoLevel.hp, _info.id);
+            _unitHP = engine.players.getPlayer(from.ownerId).modifier.calculate(ModifierType.UNITS_HP, _infoLevel.Hp, _info.Id);
             _hp = _unitHP * unitCount;
             units.setCount(getUnits());
         }
@@ -111,7 +112,7 @@ namespace BattleEngine.Actors.Units
 
         public int unitId
         {
-            get { return _info.id; }
+            get { return _info.Id; }
         }
 
         public double powerDamage
@@ -123,7 +124,7 @@ namespace BattleEngine.Actors.Units
         {
             get
             {
-                var damage = engine.players.getPlayer(ownerId).modifier.calculate(ModifierType.UNITS_DAMAGE, infoLevel.damage, info.id);
+                var damage = engine.players.getPlayer(ownerId).modifier.calculate(ModifierType.UNITS_DAMAGE, infoLevel.Damage, info.Id);
                 return damage;
             }
         }
@@ -135,9 +136,9 @@ namespace BattleEngine.Actors.Units
                 var defense = GetComponent<UnitDefenseComponent>();
                 if (defense != null)
                 {
-                    return defense.calculateDefense(_infoLevel.defense);
+                    return defense.calculateDefense(_infoLevel.Defense);
                 }
-                return _infoLevel.defense;
+                return _infoLevel.Defense;
             }
         }
         public double oneUnitMagicDefense
@@ -147,9 +148,9 @@ namespace BattleEngine.Actors.Units
                 var defense = GetComponent<UnitDefenseComponent>();
                 if (defense != null)
                 {
-                    return defense.calculateMagicDefense(_infoLevel.magicDefense);
+                    return defense.calculateMagicDefense(_infoLevel.MagicDefense);
                 }
-                return _infoLevel.magicDefense;
+                return _infoLevel.MagicDefense;
             }
         }
 
@@ -163,3 +164,4 @@ namespace BattleEngine.Actors.Units
             get { return _attachedToBuilding; }
         }
     }
+}

@@ -20,5 +20,11 @@ namespace BattleEngine.Actors.Factories
             return result;
         }
 
+        public T instantiate<T>() where T : BattleDamage
+        {
+            var result = _factory.instantiate(typeof(T)) as T;
+            return result;
+        }
+
     }
 }

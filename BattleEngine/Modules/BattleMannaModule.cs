@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BattleEngine.Actors;
 using BattleEngine.Actors.Buildings;
 using BattleEngine.Engine;
 using BattleEngine.Modifiers;
-using BattleEngine.Players;
 using BattleEngine.Utils;
+using BattleEngine.Output;
+using BattleEngine.Components.Buildings;
 
 namespace BattleEngine.Modules
 {
@@ -29,7 +26,7 @@ namespace BattleEngine.Modules
 
             saveLastManna(context, tick);
 
-            foreach (var item in _temp)
+            foreach (BattleBuilding item in _temp)
             {
                 var mannaComponent = item.GetComponent<MannaRegenComponent>();
                 if (mannaComponent != null)

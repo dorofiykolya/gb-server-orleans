@@ -4,22 +4,22 @@ namespace BattleEngine.Actors.Bullets
 {
     public class BattleBullet : BattleObject
     {
-        public void update(int tick, int deltaTick)
+        public virtual void update(int tick, int deltaTick)
         {
 
         }
 
-        public BattleDamage generateDamage()
+        public virtual BattleDamage generateDamage()
         {
             return null;
         }
 
-        public bool needRemove
+        public virtual bool needRemove
         {
             get { return false; }
         }
 
-        public bool needGenerateDamage
+        public virtual bool needGenerateDamage
         {
             get { return false; }
         }

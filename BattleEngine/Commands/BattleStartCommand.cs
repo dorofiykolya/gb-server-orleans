@@ -1,6 +1,7 @@
 ﻿using BattleEngine.Actions;
 using BattleEngine.Actors.Buildings;
 using BattleEngine.Engine;
+using BattleEngine.Output;
 
 namespace BattleEngine.Commands
 {
@@ -21,13 +22,13 @@ namespace BattleEngine.Commands
         {
             foreach (var record in context.configuration.buildings)
             {
-                var battleObject = context.actors.factory.buildingFactory.instantiate<BattleBuilding>();
+                var battleObject = context.actors.factory.buildingFactory.instantiate(typeof(BattleBuilding));
                 context.actors.buildings.AddComponent(battleObject);
                 battleObject.initialize(record, context.configuration);
 
                 var evt = context.output.enqueueByFactory<BuildingCreateEvent>();
                 evt.objectId = battleObject.objectId;
-                evt.buildingId = battleObject.info.id;
+                evt.buildingId = battleObject.info.Id;
                 evt.level = battleObject.level;
                 evt.ownerId = battleObject.ownerId;
                 evt.tick = action.tick;
