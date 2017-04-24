@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
+    <BootstrapProviders>
+      <Provider Type="OrleansDashboard.Dashboard" Name="Dashboard" Port="9988" Username="admin" Password="admin" />
+    </BootstrapProviders>
+    <StreamProviders>
+      <Provider Type="Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider" Name="SMSProvider"/>
+    </StreamProviders>
     <StorageProviders>
       <!--<Provider Type="Orleans.Storage.MemoryStorage" Name="Default" />-->
       <Provider Type="Orleans.StorageProviders.SimpleSQLServerStorage.SimpleSQLServerStorage" Name="Default"
