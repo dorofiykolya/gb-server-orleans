@@ -192,7 +192,7 @@ namespace Common.Composite
 
         internal List<Component> GetComponents(Type type = null, bool includeInactive = false, List<Component> result = null)
         {
-            result = result ?? (result = new List<Component>());
+            result = result ?? new List<Component>();
             var index = result.Count;
             foreach (var component in _collection)
             {
@@ -208,7 +208,7 @@ namespace Common.Composite
 
         internal List<Component> GetComponentsInChildren(Type type = null, bool recursive = false, bool includeInactive = false, List<Component> result = null)
         {
-            result = result ?? (result = new List<Component>());
+            result = result ?? new List<Component>();
             var index = result.Count;
             foreach (var component in _collection)
             {

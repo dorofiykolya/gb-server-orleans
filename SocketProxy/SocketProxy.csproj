@@ -236,6 +236,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decoders\PacketType.cs" />
     <Compile Include="ProxyServer.cs" />
     <Compile Include="Users\CommandFactoryProvider.cs" />
     <Compile Include="Users\UserCommandFactoryProvider.cs" />
